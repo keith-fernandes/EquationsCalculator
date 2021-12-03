@@ -26,7 +26,6 @@ public class AdminMenu extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-        mainMenuLabel.setText("ADMIN MENU - Connected Admin: " + admin);
         welcomeLabel.setText("Welcome, " + admin);
     }
 
@@ -41,7 +40,7 @@ public class AdminMenu extends javax.swing.JFrame {
 
         removeUserButton = new javax.swing.JButton();
         logOutButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        pastCalculations = new javax.swing.JButton();
         mainMenuLabel = new javax.swing.JLabel();
         welcomeLabel = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
@@ -66,17 +65,17 @@ public class AdminMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("ALL PAST CALCULATIONS");
-        jButton3.setAlignmentY(0.0F);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        pastCalculations.setText("ALL PAST CALCULATIONS");
+        pastCalculations.setAlignmentY(0.0F);
+        pastCalculations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                pastCalculationsActionPerformed(evt);
             }
         });
 
         mainMenuLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         mainMenuLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mainMenuLabel.setText("ADMIN MENU - Connected Admin:");
+        mainMenuLabel.setText("ADMIN MENU");
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -112,7 +111,7 @@ public class AdminMenu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(257, 257, 257)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pastCalculations, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(removeUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -137,7 +136,7 @@ public class AdminMenu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(removeUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pastCalculations, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(41, Short.MAX_VALUE))
@@ -148,49 +147,64 @@ public class AdminMenu extends javax.swing.JFrame {
 
     private void removeUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserButtonActionPerformed
         /**
-        * Remove User button will take the Admin to the Deletion page and
-        * dispose of the Admin Menu. It will also give the name of the Admin as
-        * a parameter to be used in the greeting label.
-        */
+         * Remove User button will take the Admin to the Deletion page and
+         * dispose of the Admin Menu. It will also give the name of the Admin as
+         * a parameter to be used in the greeting label.
+         */
+        DeleteUser Remove = new DeleteUser(welcomeLabel.getText().substring(8).trim());
+        Remove.setVisible(true);
+        dispose();
 
     }//GEN-LAST:event_removeUserButtonActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         /**
-        * Logout button will take the user back to the Login page and dispose
-        * of the Admin Menu.
-        */
-
+         * Logout button will take the user back to the Login page and dispose
+         * of the Admin Menu.
+         */
+        loginPage newLogin = new loginPage();
+        newLogin.setVisible(true);
+        dispose();
     }//GEN-LAST:event_logOutButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void pastCalculationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastCalculationsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        /**
+         * All Past Calculations. This button will show the admin a history of
+         * all past calculations performed by all users.
+         */
+        
+    }//GEN-LAST:event_pastCalculationsActionPerformed
 
     private void editInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editInfoButtonActionPerformed
         /**
-        * Edit Info button will take the Admin to the Edition page and dispose
-        * of the Admin Menu. It will also give the name of the Admin as a
-        * parameter to be used in the greeting label.
-        */
-
+         * Edit Info button will take the Admin to the Edition page and dispose
+         * of the Admin Menu. It will also give the name of the Admin as a
+         * parameter to be used in the greeting label.
+         */
+        EditAdminInfo EditInfo = new EditAdminInfo(welcomeLabel.getText().substring(8).trim());
+        EditInfo.setVisible(true);
+        dispose();
     }//GEN-LAST:event_editInfoButtonActionPerformed
 
     private void listOfUsersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listOfUsersButtonActionPerformed
         /**
-        * Lisf of Users button will take the Admin to the Listing page and
-        * dispose of the Admin Menu. It will also give the name of the Admin as
-        * a parameter to be used in the greeting label.
-        */
+         * Lisf of Users button will take the Admin to the Listing page and
+         * dispose of the Admin Menu. It will also give the name of the Admin as
+         * a parameter to be used in the greeting label.
+         */
+        ListOfUsers List = new ListOfUsers(welcomeLabel.getText().substring(8).trim());
+        List.setVisible(true);
+        dispose();
 
     }//GEN-LAST:event_listOfUsersButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editInfoButton;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton listOfUsersButton;
     private javax.swing.JButton logOutButton;
     private javax.swing.JLabel mainMenuLabel;
+    private javax.swing.JButton pastCalculations;
     private javax.swing.JButton removeUserButton;
     private javax.swing.JLabel title;
     private javax.swing.JLabel welcomeLabel;

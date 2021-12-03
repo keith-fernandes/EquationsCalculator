@@ -135,19 +135,23 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void editInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editInfoButtonActionPerformed
         /**
-        * Edit Info button will take the User to the Edition page and dispose
-        * of the Main Menu. It will also give the name of the User as a
-        * parameter to be used in the greeting label.
-        */
+         * Edit Info button will take the User to the Edition page and dispose
+         * of the Main Menu. It will also give the name of the User as a
+         * parameter to be used in the greeting label.
+         */
+
+        EditInfo editInfo = new EditInfo(welcomeLabel.getText().substring(8).trim());
+        editInfo.setVisible(true);
+        dispose();
 
     }//GEN-LAST:event_editInfoButtonActionPerformed
 
     private void calculatorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculatorButtonActionPerformed
         /**
-        * Calculation button will take the user to the Calculation page and
-        * dispose of the Main Menu. It will also give the name of the User as a
-        * parameter to be used in the greeting label.
-        */
+         * Calculation button will take the user to the Calculation page and
+         * dispose of the Main Menu. It will also give the name of the User as a
+         * parameter to be used in the greeting label.
+         */
 
     }//GEN-LAST:event_calculatorButtonActionPerformed
 
@@ -157,9 +161,12 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         /**
-        * Logout button will take the user back to the Login page and dispose
-        * of the Main Menu.
-        */
+         * Logout button will take the user back to the Login page and dispose
+         * of the Main Menu.
+         */
+        loginPage newLogin = new loginPage();
+        newLogin.setVisible(true);
+        dispose();
 
     }//GEN-LAST:event_logOutButtonActionPerformed
 

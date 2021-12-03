@@ -90,11 +90,6 @@ public class loginPage extends javax.swing.JFrame {
 
         signupButton.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         signupButton.setText("SIGN UP");
-        signupButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                signupButtonMouseClicked(evt);
-            }
-        });
         signupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signupButtonActionPerformed(evt);
@@ -264,18 +259,15 @@ public class loginPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
-    private void signupButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signupButtonMouseClicked
-        /**
+    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
+        // TODO add your handling code here:
+                /**
         * In case of new users. This button will take them to the registration
         * page and dispose of the login page.
         */
         RegistrationPage newUser = new RegistrationPage();
         newUser.setVisible(true);
         dispose();
-    }//GEN-LAST:event_signupButtonMouseClicked
-
-    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_signupButtonActionPerformed
 
     private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
