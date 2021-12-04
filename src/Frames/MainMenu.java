@@ -164,7 +164,7 @@ public class MainMenu extends javax.swing.JFrame {
          * Logout button will take the user back to the Login page and dispose
          * of the Main Menu.
          */
-        loginPage newLogin = new loginPage();
+        LoginPage newLogin = new LoginPage();
         newLogin.setVisible(true);
         dispose();
 
