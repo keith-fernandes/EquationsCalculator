@@ -22,7 +22,7 @@ public class DeleteUser extends javax.swing.JFrame {
     /**
      * Creates new form DeleteUser -and apply dimensions to set the window in
      * the middle of the screen
-     * 
+     *
      * @param admin - name of the current connected Admin for greeting and
      * tracking purposes
      */
@@ -33,7 +33,7 @@ public class DeleteUser extends javax.swing.JFrame {
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
         welcomeLabel.setText("User: " + admin);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,8 +148,8 @@ public class DeleteUser extends javax.swing.JFrame {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
                 /**
-                * This query will check if the user exists.
-                */
+                 * This query will check if the user exists.
+                 */
                 String check = "Select * from users where username=?;";
 
                 PreparedStatement pstCheck = con.prepareStatement(check);
@@ -158,46 +158,53 @@ public class DeleteUser extends javax.swing.JFrame {
 
                 ResultSet rs = pstCheck.executeQuery();
                 /**
-                * Condition and error message in case the user does not exist.
-                * It will also bring the focus back to the field so the user
-                * can type again.
-                */
+                 * Condition and error message in case the user does not exist.
+                 * It will also bring the focus back to the field so the user
+                 * can type again.
+                 */
                 if (!rs.next()) {
                     JOptionPane.showMessageDialog(null, "\n Action Not Successful\nUsername doesn't exist!");
                     deletionTextField.setText("");
                     deletionTextField.requestFocus();
                     pstCheck.close();
                     /**
-                    * Condition if user to be deleted is an Admin.
-                    * It will show the error message and bring the focus back
-                    * to the field so the user can type again.
-                    */
-                } else if(rs.getString("userAdmin").equals("YES")) {
+                     * Condition if user to be deleted is an Admin. It will show
+                     * the error message and bring the focus back to the field
+                     * so the user can type again.
+                     */
+                } else if (rs.getString("userAdmin").equals("YES")) {
                     JOptionPane.showMessageDialog(null, "\n Action Not Successful\nYou can't remove an Admin!");
                     deletionTextField.setText("");
                     deletionTextField.requestFocus();
                     pstCheck.close();
 
-                } else{
+                } else {
                     /**
-                    * In case the user exists and it is not an Admin.
-                    * We will create another query to remove the user from the
-                    * database.
-                    */
-                    String remove = "delete from users where username=?;";
+                     * In case the user exists and it is not an Admin. We will
+                     * create another query to remove the user from the
+                     * database.
+                     */
+                    //To remove the user we first need to remove the FK related to it
+                    int iduser = rs.getInt("iduser");
+                    String removeFK = "delete from calculator where iduser=?;";
+                    String removeUser = "delete from users where username=?;";
                     //Passing the query to the statement.
-                    PreparedStatement pstRemove = con.prepareStatement(remove);
+                    PreparedStatement pstRemove = con.prepareStatement(removeFK);
                     //Passing the username as a parameter to complete the query.
-                    pstRemove.setString(1, username);
+                    pstRemove.setInt(1, iduser);
                     //Executing the query.
+                    pstRemove.execute();
+                    
+                    //Now that we removed the FK from Calculater (and all the user's calculations) we can safely delete the user
+                    pstRemove = con.prepareStatement(removeUser);
+                    pstRemove.setString(1, username);
                     pstRemove.execute();
 
                     /**
-                    * Message of success.
-                    * Clearing and bringing focus back to the field in case
-                    * the Admin wants to remove another user.
-                    */
-                    JOptionPane.showMessageDialog(null, "Action Successful\nUser '"+username+"' removed from database");
+                     * Message of success. Clearing and bringing focus back to
+                     * the field in case the Admin wants to remove another user.
+                     */
+                    JOptionPane.showMessageDialog(null, "Action Successful\nUser '" + username + "' removed from database");
                     deletionTextField.setText("");
                     deletionTextField.requestFocus();
 
@@ -214,10 +221,10 @@ public class DeleteUser extends javax.swing.JFrame {
 
     private void backRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backRegisterActionPerformed
         /**
-        * Back button will take the admin back to its menu and dispose of the
-        * Listing menu. It will also give the name of the Admin as a parameter
-        * to be used in the greeting label.
-        */
+         * Back button will take the admin back to its menu and dispose of the
+         * Listing menu. It will also give the name of the Admin as a parameter
+         * to be used in the greeting label.
+         */
         AdminMenu newInfo = new AdminMenu(welcomeLabel.getText().substring(5).trim());
         newInfo.setVisible(true);
         dispose();
