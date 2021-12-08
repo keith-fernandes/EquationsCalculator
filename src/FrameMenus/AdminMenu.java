@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frames;
+package FrameMenus;
 
+import FrameOptions.DeleteUser;
+import FrameOptions.EditAdminInfo;
+import FrameOptions.ListOfUsers;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 

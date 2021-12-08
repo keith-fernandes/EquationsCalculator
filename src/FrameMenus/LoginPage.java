@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frames;
+package FrameMenus;
 
+import FrameMenus.AdminMenu;
+import FrameMenus.MainMenu;
+import FrameOptions.RegistrationPage;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -55,6 +58,9 @@ public class LoginPage extends javax.swing.JFrame {
         userWarning = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login Page");
+        setBackground(new java.awt.Color(255, 102, 102));
+        setForeground(new java.awt.Color(240, 240, 240));
 
         passwordWarning.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 51, 51));

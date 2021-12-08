@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frames;
+package FrameMenus;
 
+import FrameCalculations.Calc2x2;
+import FrameOptions.EditInfo;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -152,6 +154,9 @@ public class MainMenu extends javax.swing.JFrame {
          * dispose of the Main Menu. It will also give the name of the User as a
          * parameter to be used in the greeting label.
          */
+        Calc2x2 newCalc = new Calc2x2(welcomeLabel.getText().substring(4).trim());
+        newCalc.setVisible(true);
+        dispose();
 
     }//GEN-LAST:event_calculatorButtonActionPerformed
 
