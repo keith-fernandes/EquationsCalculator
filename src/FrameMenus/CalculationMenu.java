@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frames;
+package FrameMenus;
 
+import FrameCalculations.Calc2x2;
+import FrameCalculations.Calc3x3;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -12,7 +14,7 @@ import java.awt.Toolkit;
  *
  * @author kcfke
  */
-public class Calculation extends javax.swing.JFrame {
+public class CalculationMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form Calculation - and apply dimensions to set the window in
@@ -21,7 +23,7 @@ public class Calculation extends javax.swing.JFrame {
      * @param username - name of the current connected User for greeting and
      * tracking purposes
      */
-    public Calculation(String username) {
+    public CalculationMenu(String username) {
         initComponents();
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();

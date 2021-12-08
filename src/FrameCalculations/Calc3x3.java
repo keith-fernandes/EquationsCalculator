@@ -6,6 +6,8 @@
 package FrameCalculations;
 
 import Calculations.ThreeByThree;
+import FrameMenus.CalculationMenu;
+import FrameOptions.History;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -393,7 +395,7 @@ public class Calc3x3 extends javax.swing.JFrame {
         * dispose of the current menu. It will also give the name of the User
         * as a parameter to be used in the greeting label.
         */
-        Calculation calcMenu = new Calculation(welcomeLabel.getText().substring(4).trim());
+        CalculationMenu calcMenu = new CalculationMenu(welcomeLabel.getText().substring(4).trim());
         calcMenu.setVisible(true);
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed

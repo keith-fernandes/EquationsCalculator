@@ -3,53 +3,68 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frames;
+package FrameOptions;
 
+import FrameMenus.MainMenu;
 import Utilities.FillTable;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author kcfke
  */
-public class HistoryOfAllUsers extends javax.swing.JFrame {
+public class History extends javax.swing.JFrame {
 
     /**
-     * Creates new form HistoryOfAllUsers
+     * Creates new form History
      */
-    public HistoryOfAllUsers(String admin) {
+    public History(String user) {
         initComponents();
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-        welcomeLabel.setText("Hi, " + admin);
+        welcomeLabel.setText("Hi, " + user);
         
-        
+        int iduser = 0;
         try {
             //Connecting to the database
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+
+            String checkUser = "SELECT iduser FROM users WHERE username=?";
+            PreparedStatement pst = con.prepareStatement(checkUser);
+
+            pst.setString(1, welcomeLabel.getText().substring(4).trim());
+
+            ResultSet rsCheck = pst.executeQuery();
+            //Getting the user ID to identify them and display the correct info
+            if (rsCheck.next()) {
+                iduser = rsCheck.getInt("iduser");
+
+            }
             /**
              * This query will collect the information to be displayed in our
              * list.
              */
-            String calculations = "SELECT calculator.equation1 as 'Equation 1', calculator.equation2 as 'Equation 2', "
-                    + "calculator.equation3 as 'Equation 3', calculator.results as Result, users.username as 'Performed by' "
-                    + "from calculator inner join users on calculator.iduser=users.iduser order by users.username asc, "
-                    + "equation3 desc;";
+            String results = "SELECT equation1 as 'Equation 1', equation2 as 'Equation 2', equation3 as 'Equation 3', results as Result from calculator where iduser=? order by equation3 desc";
 
-            PreparedStatement pst = con.prepareStatement(calculations);
-            pst.execute();
+            pst = con.prepareStatement(results);
+            pst.setInt(1, iduser);
+
+            ResultSet rs = pst.executeQuery();
+            String query = String.valueOf(rs.getStatement()).substring(43);
+            System.out.println(query);
             /**
              * Using FillTable to create this table and display the list of
              * users.
              */
-            FillTable.FillTable(historyOfUsersCalculations, calculations);
+            FillTable.FillTable(tableOfUserResults, query);
             con.close();
 
         } catch (Exception e) {
@@ -67,39 +82,14 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        historyOfUsersCalculations = new javax.swing.JTable();
         welcomeLabel = new javax.swing.JLabel();
         listLabel = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
         backRegister1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableOfUserResults = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        historyOfUsersCalculations.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        historyOfUsersCalculations.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        historyOfUsersCalculations.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Equation 1", "Equation 2", "Equation 3", "Result", "Perfomed by User"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        historyOfUsersCalculations.setGridColor(new java.awt.Color(255, 102, 102));
-        historyOfUsersCalculations.setRowHeight(25);
-        historyOfUsersCalculations.setRowMargin(4);
-        historyOfUsersCalculations.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        historyOfUsersCalculations.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(historyOfUsersCalculations);
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -123,21 +113,43 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
             }
         });
 
+        tableOfUserResults.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        tableOfUserResults.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Equation 1", "Equation 2", "Equation 3", "Results"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableOfUserResults.setGridColor(new java.awt.Color(255, 153, 153));
+        tableOfUserResults.setSelectionBackground(new java.awt.Color(255, 102, 102));
+        tableOfUserResults.setSelectionForeground(new java.awt.Color(255, 255, 153));
+        jScrollPane1.setViewportView(tableOfUserResults);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1225, Short.MAX_VALUE)
+            .addComponent(title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
             .addComponent(listLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(542, 542, 542)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(backRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(460, 460, 460))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,11 +160,11 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(listLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73)
+                .addGap(51, 51, 51)
                 .addComponent(backRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -164,16 +176,15 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
         * Listing menu. It will also give the name of the Username as a
         * parameter to be used in the greeting label.
         */
-        AdminMenu menu = new AdminMenu(welcomeLabel.getText().substring(4).trim());
+        MainMenu menu = new MainMenu(welcomeLabel.getText().substring(4).trim());
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_backRegister1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backRegister1;
-    private javax.swing.JTable historyOfUsersCalculations;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel listLabel;
+    private javax.swing.JTable tableOfUserResults;
     private javax.swing.JLabel title;
     private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables
