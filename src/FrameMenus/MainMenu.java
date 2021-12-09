@@ -7,6 +7,7 @@ package FrameMenus;
 
 import FrameCalculations.Calc2x2;
 import FrameOptions.EditInfo;
+import FrameOptions.History;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -154,14 +155,19 @@ public class MainMenu extends javax.swing.JFrame {
          * dispose of the Main Menu. It will also give the name of the User as a
          * parameter to be used in the greeting label.
          */
-        Calc2x2 newCalc = new Calc2x2(welcomeLabel.getText().substring(4).trim());
-        newCalc.setVisible(true);
+        CalculationMenu calcMenu = new CalculationMenu(welcomeLabel.getText().substring(8).trim());
+        calcMenu.setVisible(true);
         dispose();
+
 
     }//GEN-LAST:event_calculatorButtonActionPerformed
 
     private void historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyActionPerformed
         // TODO add your handling code here:
+         // TODO add your handling code here:
+        History newList = new History(welcomeLabel.getText().substring(8).trim());
+        newList.setVisible(true);
+        dispose();
     }//GEN-LAST:event_historyActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed

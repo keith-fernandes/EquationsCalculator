@@ -5,6 +5,7 @@
  */
 package FrameOptions;
 import FrameMenus.AdminMenu;
+import Utilities.FillTable;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -12,8 +13,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-//Library that creates our table to show the users
-import net.proteanit.sql.DbUtils;
+
 
 /**
  *
@@ -52,8 +52,7 @@ public class ListOfUsers extends javax.swing.JFrame {
              * users. It will get the result data from our ResultSet and
              * populate our table.
              */
-            tableOfUsers.setModel(DbUtils.resultSetToTableModel(rs));
-
+            FillTable.FillTable(tableOfUsers, sql);
             con.close();
 
         } catch (Exception e) {

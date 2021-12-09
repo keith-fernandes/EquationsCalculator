@@ -7,6 +7,7 @@ package FrameMenus;
 
 import FrameOptions.DeleteUser;
 import FrameOptions.EditAdminInfo;
+import FrameOptions.HistoryOfAllUsers;
 import FrameOptions.ListOfUsers;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -148,59 +149,55 @@ public class AdminMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void removeUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserButtonActionPerformed
+    private void listOfUsersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listOfUsersButtonActionPerformed
         /**
-         * Remove User button will take the Admin to the Deletion page and
-         * dispose of the Admin Menu. It will also give the name of the Admin as
-         * a parameter to be used in the greeting label.
-         */
-        DeleteUser Remove = new DeleteUser(welcomeLabel.getText().substring(8).trim());
-        Remove.setVisible(true);
+        * Lisf of Users button will take the Admin to the Listing page and
+        * dispose of the Admin Menu. It will also give the name of the Admin as
+        * a parameter to be used in the greeting label.
+        */
+        ListOfUsers List = new ListOfUsers(welcomeLabel.getText().substring(8).trim());
+        List.setVisible(true);
         dispose();
-
-    }//GEN-LAST:event_removeUserButtonActionPerformed
-
-    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
-        /**
-         * Logout button will take the user back to the Login page and dispose
-         * of the Admin Menu.
-         */
-        LoginPage newLogin = new LoginPage();
-        newLogin.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_logOutButtonActionPerformed
-
-    private void pastCalculationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastCalculationsActionPerformed
-        // TODO add your handling code here:
-        /**
-         * All Past Calculations. This button will show the admin a history of
-         * all past calculations performed by all users.
-         */
-        
-    }//GEN-LAST:event_pastCalculationsActionPerformed
+    }//GEN-LAST:event_listOfUsersButtonActionPerformed
 
     private void editInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editInfoButtonActionPerformed
         /**
-         * Edit Info button will take the Admin to the Edition page and dispose
-         * of the Admin Menu. It will also give the name of the Admin as a
-         * parameter to be used in the greeting label.
-         */
+        * Edit Info button will take the Admin to the Edition page and dispose
+        * of the Admin Menu. It will also give the name of the Admin as a
+        * parameter to be used in the greeting label.
+        */
         EditAdminInfo EditInfo = new EditAdminInfo(welcomeLabel.getText().substring(8).trim());
         EditInfo.setVisible(true);
         dispose();
     }//GEN-LAST:event_editInfoButtonActionPerformed
 
-    private void listOfUsersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listOfUsersButtonActionPerformed
-        /**
-         * Lisf of Users button will take the Admin to the Listing page and
-         * dispose of the Admin Menu. It will also give the name of the Admin as
-         * a parameter to be used in the greeting label.
-         */
-        ListOfUsers List = new ListOfUsers(welcomeLabel.getText().substring(8).trim());
-        List.setVisible(true);
+    private void pastCalculationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastCalculationsActionPerformed
+        // TODO add your handling code here:
+        HistoryOfAllUsers newList = new HistoryOfAllUsers(welcomeLabel.getText().substring(8).trim());
+        newList.setVisible(true);
         dispose();
+    }//GEN-LAST:event_pastCalculationsActionPerformed
 
-    }//GEN-LAST:event_listOfUsersButtonActionPerformed
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+        /**
+        * Logout button will take the user back to the Login page and dispose
+        * of the Admin Menu.
+        */
+        LoginPage newLogin = new LoginPage();
+        newLogin.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logOutButtonActionPerformed
+
+    private void removeUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserButtonActionPerformed
+        /**
+        * Remove User button will take the Admin to the Deletion page and
+        * dispose of the Admin Menu. It will also give the name of the Admin as
+        * a parameter to be used in the greeting label.
+        */
+        DeleteUser Remove = new DeleteUser(welcomeLabel.getText().substring(8).trim());
+        Remove.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_removeUserButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editInfoButton;
