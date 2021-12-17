@@ -5,6 +5,7 @@
  */
 package Calculations;
 
+import static java.lang.Double.POSITIVE_INFINITY;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,8 +17,8 @@ public class ThreeByThree {
     /**
      * Method to calculate the result of simultaneous equations using properties
      * of matrices. This is the 3x3 version and will receive 12 values: 9 values
-     * for variables x, y and z, and 3 values for the results. .: A0x + B0y +
-     * C0Z = J0 / D0x + E0y + F0Z = K0 / G0x + H0y + I0Z = L0
+     * for variables x, y and z, and 3 values for the results. 
+     * .: Ax + By + Cz = J / Dx + Ey + Fz = K / Gx + Hy + Iz = L
      *
      * @param A - variable x of the first equation
      * @param B - variable Y of the first equation
@@ -34,13 +35,18 @@ public class ThreeByThree {
      * @return - a 2D array that represents a matrix result size 3x1
      */
     public static double[][] threeBythree(double A, double B, double C,
-            double D, double E, double F,
-            double G, double H, double I,
-            double J, double K, double L) {
+                                          double D, double E, double F,
+                                          double G, double H, double I,
+                                          double J, double K, double L) {
         /**
          * The formula we are going to work with is: X = (A^-1)*B. In our
          * program they will be represented by: matrixX =
-         * (1/det*matrxiASwapped)*(matrixB)
+         * (1/det*CofactorMatrix)*(matrixB) obs: the variable 'CofactorMatrix'
+         * is not going to be transposed before multiplying (1/det), instead the
+         * variable 'cofactorTransposeDet' will receive the result of this
+         * multiplication and the transposition at the same time, to optimize
+         * the code.
+         *
          */
 // Variables of the Equation ---------------------------------------------------
 
@@ -69,9 +75,8 @@ public class ThreeByThree {
         matrixB[0][0] = J;
         matrixB[1][0] = K;
         matrixB[2][0] = L;
-        
+            
 //------------------------------------------------------------------------------
-
         /**
          * CofactorMatrix. It's the matrix of the determinants of each element
          * of Matrix A. Here we executed the calculations and applied the signs
@@ -92,14 +97,13 @@ public class ThreeByThree {
         CofactorMatrix[2][2] = matrixA[0][0] * matrixA[1][1] - matrixA[0][1] * matrixA[1][0];
 
         /**
-         * Determinant Calculation. Multiplying any row from Matrix A by the
-         * CofactorMatrix.
+         * Determinant Calculation. Multiplying any row from Matrix A by any of
+         * the CofactorMatrix. In this case, the first row.
          */
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 3; j++) {
                 det = det + matrixA[i][j] * CofactorMatrix[i][j];
             }
-            System.out.println();
         }
 
         /**
@@ -110,9 +114,22 @@ public class ThreeByThree {
          */
         double[][] cofactorTransposeDet = new double[3][3];
 
+        //Check if the determinant is equal to zero.
+        /**
+         * If so.
+         * The result Java gives is INFINITY. We decided to pass this value
+         * as return to identify and display the output accordingly.
+         */
         if (det == 0) {
+            matrixX[0][0] = POSITIVE_INFINITY;
+            matrixX[1][0] = POSITIVE_INFINITY;
+            matrixX[2][0] = POSITIVE_INFINITY;
             JOptionPane.showMessageDialog(null, "Determinant is equal to zero!"
                                             + "\nEquation cannot be computed!");
+        /**
+         * If not.
+         * We proceed with the calculations normally.
+         */
         } else {
 
             cofactorTransposeDet[0][0] = CofactorMatrix[0][0] * (1 / det);
@@ -126,24 +143,24 @@ public class ThreeByThree {
             cofactorTransposeDet[0][2] = CofactorMatrix[2][0] * (1 / det);
             cofactorTransposeDet[1][2] = CofactorMatrix[2][1] * (1 / det);
             cofactorTransposeDet[2][2] = CofactorMatrix[2][2] * (1 / det);
+            
+            /**
+             * MatrixX is the result Matrix. It will receive the last part of
+             * the calculation: (1/det*Cofactor Transpose Matrix) * Matrix B;
+             * The result will be a Matrix 3x1: x, y, and z.
+             */
+            double sum = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 1; j++) {
+                    for (int k = 0; k < 3; k++) {
+                        sum = sum + cofactorTransposeDet[i][k] * matrixB[k][j];
+                    }
+                    matrixX[i][j] = sum;
+                    sum = 0;
+                }
+            }             
         }
 
-        
-        /**
-         * MatrixX is the result Matrix. It will receive the last part of the
-         * calculation: (1/det*Cofactor Transpose Matrix) * Matrix B; The result
-         * will be a Matrix 3x1: x, y, and z.
-         */
-        double sum = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 1; j++) {
-                for (int k = 0; k < 3; k++) {
-                    sum = sum + cofactorTransposeDet[i][k] * matrixB[k][j];
-                }
-                matrixX[i][j] = sum;
-                sum = 0;
-            }
-        }
         //The result will be returned to Calc3x3 to be displayed to the user.
         return matrixX;
     }

@@ -5,7 +5,7 @@
  */
 package FrameOptions;
 import FrameMenus.AdminMenu;
-import Utilities.FillTable;
+import Utilities.Utilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -43,20 +43,17 @@ public class ListOfUsers extends javax.swing.JFrame {
              * This query will collect the information to be displayed in our
              * list.
              */
-            String sql = "SELECT firstname as Name, lastname as Surname, username as Username, userAdmin as 'System Admin' from users;";
+            String sql = "SELECT firstname as Name, lastname as Surname, "
+                    + "username as Username, userAdmin as 'System Admin' from users;";
 
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery(sql);
             /**
-             * We imported DBUTILS to create this table and display the list of
-             * users. It will get the result data from our ResultSet and
-             * populate our table.
+             * Imports FillTable method to create and populate the table.
              */
-            FillTable.FillTable(tableOfUsers, sql);
+            Utilities.FillTable(tableOfUsers, sql);
             con.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, "Something went wrong!\n"+e);
         }
     }
     /**
@@ -104,11 +101,11 @@ public class ListOfUsers extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "Surname", "Username"
+                "Name", "Surname", "Username", "System Admin"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

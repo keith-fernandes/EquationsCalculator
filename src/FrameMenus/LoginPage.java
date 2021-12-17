@@ -5,9 +5,8 @@
  */
 package FrameMenus;
 
-import FrameMenus.AdminMenu;
-import FrameMenus.MainMenu;
 import FrameOptions.RegistrationPage;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -34,6 +33,7 @@ public class LoginPage extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+
     }
 
     /**
@@ -60,7 +60,7 @@ public class LoginPage extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Page");
         setBackground(new java.awt.Color(255, 102, 102));
-        setForeground(new java.awt.Color(240, 240, 240));
+        setForeground(new java.awt.Color(255, 102, 102));
 
         passwordWarning.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 51, 51));
@@ -188,7 +188,7 @@ public class LoginPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void usernameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyReleased
-        // TODO add your handling code here:
+        // Clears the empty username warning
         userWarning.setText("");
     }//GEN-LAST:event_usernameFieldKeyReleased
 
@@ -282,59 +282,12 @@ public class LoginPage extends javax.swing.JFrame {
         * shortcut: instead of clicking, the user can just press ENTER.
         */
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
-            if (usernameField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {
-                userWarning.setText("Username is invalid");
-                passwordWarning.setText("Password is invalid");
-            }
-            if (usernameField.getText().trim().isEmpty()) {
-                userWarning.setText("Username is invalid");
-            } else if (passwordField.getText().trim().isEmpty()) {
-                passwordWarning.setText("Password is invalid");
-            } else {
-
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
-                    String sql = "Select * from users where username=? and password=?";
-
-                    PreparedStatement pst = con.prepareStatement(sql);
-
-                    pst.setString(1, usernameField.getText());
-                    pst.setString(2, passwordField.getText());
-
-                    ResultSet rs = pst.executeQuery();
-
-                    if (rs.next()) {
-                        if (rs.getString("userAdmin").equals("YES")) {
-
-                            String user = rs.getString("username");
-                            AdminMenu menu = new AdminMenu(user.substring(0, 1).toUpperCase() + user.substring(1));
-                            menu.setVisible(true);
-                            dispose();
-                        } else {
-
-                            String user = rs.getString("username");
-                            MainMenu menu = new MainMenu(user.substring(0, 1).toUpperCase() + user.substring(1));
-                            menu.setVisible(true);
-                            setVisible(false);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Login Denied");
-                        usernameField.setText("");
-                        passwordField.setText("");
-                    }
-                    con.close();
-
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            }
+            loginButtonActionPerformed(null);
         }
     }//GEN-LAST:event_passwordFieldKeyPressed
 
     private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyReleased
-        // TODO add your handling code here:
+        // Clears the empty username warning
         passwordWarning.setText("");
     }//GEN-LAST:event_passwordFieldKeyReleased
 
@@ -365,11 +318,12 @@ public class LoginPage extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+           
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LoginPage().setVisible(true);
+                
             }
         });
     }

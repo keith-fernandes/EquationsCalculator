@@ -5,7 +5,6 @@
  */
 package FrameMenus;
 
-import FrameCalculations.Calc2x2;
 import FrameOptions.EditInfo;
 import FrameOptions.History;
 import java.awt.Dimension;
@@ -163,8 +162,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_calculatorButtonActionPerformed
 
     private void historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyActionPerformed
-        // TODO add your handling code here:
-         // TODO add your handling code here:
+
         History newList = new History(welcomeLabel.getText().substring(8).trim());
         newList.setVisible(true);
         dispose();

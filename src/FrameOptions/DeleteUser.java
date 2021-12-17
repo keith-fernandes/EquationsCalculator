@@ -45,7 +45,7 @@ public class DeleteUser extends javax.swing.JFrame {
     private void initComponents() {
 
         confirmRemoveButton = new javax.swing.JButton();
-        warningRegistration = new javax.swing.JLabel();
+        warningEmptyUser = new javax.swing.JLabel();
         backRegister = new javax.swing.JButton();
         deleteTitle = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
@@ -61,8 +61,8 @@ public class DeleteUser extends javax.swing.JFrame {
             }
         });
 
-        warningRegistration.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        warningRegistration.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        warningEmptyUser.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        warningEmptyUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         backRegister.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         backRegister.setText("BACK");
@@ -99,7 +99,7 @@ public class DeleteUser extends javax.swing.JFrame {
             .addComponent(title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(deleteTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
             .addComponent(welcomeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(warningRegistration, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(warningEmptyUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -126,7 +126,7 @@ public class DeleteUser extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(confirmRemoveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(warningRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(warningEmptyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                 .addComponent(backRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -136,87 +136,102 @@ public class DeleteUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmRemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmRemoveButtonActionPerformed
-        //This string will hold the username to be deleted.
+        //This string will hold the username to be deleted
         String username = deletionTextField.getText().trim();
-
-        //Condition to check if the field is not empty.
+        
+        //Check to see if field is not empty
         if (username.isEmpty()) {
-            warningRegistration.setText("*Username for deletion required");
+            warningEmptyUser.setText("*Username for deletion required");
         } else {
-
-            try {
-                //connecting to the database
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
-                /**
-                 * This query will check if the user exists.
-                 */
-                String check = "Select * from users where username=?;";
-
-                PreparedStatement pstCheck = con.prepareStatement(check);
-
-                pstCheck.setString(1, username);
-
-                ResultSet rs = pstCheck.executeQuery();
-                /**
-                 * Condition and error message in case the user does not exist.
-                 * It will also bring the focus back to the field so the user
-                 * can type again.
-                 */
-                if (!rs.next()) {
-                    JOptionPane.showMessageDialog(null, "\n Action Not Successful\nUsername doesn't exist!");
-                    deletionTextField.setText("");
-                    deletionTextField.requestFocus();
-                    pstCheck.close();
+            /**
+             * Deletion confirmation.
+             * Displays a message to the Admin to confirm the action.
+             */
+            Object[] options = {"REMOVE", "CANCEL"};
+            int opt = JOptionPane.showOptionDialog(DeleteUser.this,
+                    "Removing the user will also remove all his calculations"
+                    + "\nAre you sure you want to remove '" + username + "' from the list of users?",
+                    " CAUTION! Action irreversible! ",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+            //Option 'CANCEL' takes the Admin back.
+            if (opt == JOptionPane.NO_OPTION) {
+                this.setVisible(true);
+                //Option 'REMOVE' will run the deletion code.
+            } else {
+                try {
+                    //connecting to the database
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
                     /**
-                     * Condition if user to be deleted is an Admin. It will show
-                     * the error message and bring the focus back to the field
-                     * so the user can type again.
+                     * This query will check if the user exists.
                      */
-                } else if (rs.getString("userAdmin").equals("YES")) {
-                    JOptionPane.showMessageDialog(null, "\n Action Not Successful\nYou can't remove an Admin!");
-                    deletionTextField.setText("");
-                    deletionTextField.requestFocus();
-                    pstCheck.close();
+                    String check = "Select * from users where username=?;";
 
-                } else {
+                    PreparedStatement pstCheck = con.prepareStatement(check);
+
+                    pstCheck.setString(1, username);
+
+                    ResultSet rs = pstCheck.executeQuery();
                     /**
-                     * In case the user exists and it is not an Admin. We will
-                     * create another query to remove the user from the
-                     * database.
+                     * Condition and error message in case the user does not
+                     * exist. It will also bring the focus back to the field so
+                     * the user can type again.
                      */
-                    //To remove the user we first need to remove the FK related to it
-                    int iduser = rs.getInt("iduser");
-                    String removeFK = "delete from calculator where iduser=?;";
-                    String removeUser = "delete from users where username=?;";
-                    //Passing the query to the statement.
-                    PreparedStatement pstRemove = con.prepareStatement(removeFK);
-                    //Passing the username as a parameter to complete the query.
-                    pstRemove.setInt(1, iduser);
-                    //Executing the query.
-                    pstRemove.execute();
-                    
-                    //Now that we removed the FK from Calculater (and all the user's calculations) we can safely delete the user
-                    pstRemove = con.prepareStatement(removeUser);
-                    pstRemove.setString(1, username);
-                    pstRemove.execute();
+                    if (!rs.next()) {
+                        JOptionPane.showMessageDialog(null, "\n Action Not Successful\nUsername doesn't exist!");
+                        deletionTextField.setText("");
+                        deletionTextField.requestFocus();
+                        pstCheck.close();
+                        /**
+                         * Condition if user to be deleted is an Admin. It will
+                         * show the error message and bring the focus back to
+                         * the field so the user can type again.
+                         */
+                    } else if (rs.getString("userAdmin").equals("YES")) {
+                        JOptionPane.showMessageDialog(null, "\n Action Not Successful\nYou can't remove an Admin!");
+                        deletionTextField.setText("");
+                        deletionTextField.requestFocus();
+                        pstCheck.close();
 
-                    /**
-                     * Message of success. Clearing and bringing focus back to
-                     * the field in case the Admin wants to remove another user.
-                     */
-                    JOptionPane.showMessageDialog(null, "Action Successful\nUser '" + username + "' removed from database");
-                    deletionTextField.setText("");
-                    deletionTextField.requestFocus();
+                    } else {
+                        /**
+                         * In case the user exists and it is not an Admin. We
+                         * will create another query to remove the user from the
+                         * database.
+                         */
+                        //To remove the user we first need to remove the FK related to it
+                        int iduser = rs.getInt("iduser");
+                        String removeFK = "delete from calculator where iduser=?;";
+                        String removeUser = "delete from users where username=?;";
+                        //Passing the query to the statement.
+                        PreparedStatement pstRemove = con.prepareStatement(removeFK);
+                        //Passing the username as a parameter to complete the query.
+                        pstRemove.setInt(1, iduser);
+                        //Executing the query.
+                        pstRemove.execute();
 
-                    pstRemove.close();
-                    con.close();
+                        //Now that we removed the FK from Calculater (and all the user's calculations) we can safely delete the user
+                        pstRemove = con.prepareStatement(removeUser);
+                        pstRemove.setString(1, username);
+                        pstRemove.execute();
+
+                        /**
+                         * Message of success. Clearing and bringing focus back
+                         * to the field in case the Admin wants to remove
+                         * another user.
+                         */
+                        JOptionPane.showMessageDialog(null, "Action Successful\nUser '" + username + "' removed from database");
+                        deletionTextField.setText("");
+                        deletionTextField.requestFocus();
+
+                        pstRemove.close();
+                        con.close();
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e + "\nAction Not Successful");
                 }
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e + "\nAction Not Successful");
             }
-
         }
     }//GEN-LAST:event_confirmRemoveButtonActionPerformed
 
@@ -232,8 +247,8 @@ public class DeleteUser extends javax.swing.JFrame {
     }//GEN-LAST:event_backRegisterActionPerformed
 
     private void deletionTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deletionTextFieldKeyReleased
-        // TODO add your handling code here:
-        warningRegistration.setText("");
+        // It will clear the warning label.
+        warningEmptyUser.setText("");
     }//GEN-LAST:event_deletionTextFieldKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -242,7 +257,7 @@ public class DeleteUser extends javax.swing.JFrame {
     private javax.swing.JLabel deleteTitle;
     private javax.swing.JTextField deletionTextField;
     private javax.swing.JLabel title;
-    private javax.swing.JLabel warningRegistration;
+    private javax.swing.JLabel warningEmptyUser;
     private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -172,7 +172,9 @@ public class AdminMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_editInfoButtonActionPerformed
 
     private void pastCalculationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastCalculationsActionPerformed
-        // TODO add your handling code here:
+        /**
+         * Show all calculations done from all users.
+         */
         HistoryOfAllUsers newList = new HistoryOfAllUsers(welcomeLabel.getText().substring(8).trim());
         newList.setVisible(true);
         dispose();

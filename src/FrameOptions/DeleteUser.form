@@ -26,7 +26,7 @@
           <Component id="title" alignment="1" max="32767" attributes="0"/>
           <Component id="deleteTitle" alignment="0" pref="717" max="32767" attributes="0"/>
           <Component id="welcomeLabel" alignment="1" max="32767" attributes="0"/>
-          <Component id="warningRegistration" alignment="1" max="32767" attributes="0"/>
+          <Component id="warningEmptyUser" alignment="1" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -59,7 +59,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="confirmRemoveButton" min="-2" pref="37" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="warningRegistration" min="-2" pref="31" max="-2" attributes="0"/>
+              <Component id="warningEmptyUser" min="-2" pref="31" max="-2" attributes="0"/>
               <EmptySpace pref="130" max="32767" attributes="0"/>
               <Component id="backRegister" min="-2" pref="54" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -76,7 +76,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmRemoveButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="warningRegistration">
+    <Component class="javax.swing.JLabel" name="warningEmptyUser">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="18" style="1"/>

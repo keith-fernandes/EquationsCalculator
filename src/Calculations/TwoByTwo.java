@@ -5,6 +5,7 @@
  */
 package Calculations;
 
+import static java.lang.Double.POSITIVE_INFINITY;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,8 +17,8 @@ public class TwoByTwo {
     /**
      * Method to calculate the result of simultaneous equations using properties
      * of matrices. This is the 2x2 version and will receive 6 values: 4 values
-     * for variables x and y, and 2 values for the results. .: A0x + B0y = E0 /
-     * C0x +D0y = F0
+     * for variables x and y, and 2 values for the results. 
+     * .: Ax + By = E / Cx +Dy = F
      *
      * @param A - variable x of the first equation
      * @param B - variable y of the first equation
@@ -28,13 +29,13 @@ public class TwoByTwo {
      * @return - a 2D array that represents a matrix result size 2x1
      */
     public static double[][] twoBytwo(double A, double B,
-            double C, double D,
-            double E, double F) {
+                                      double C, double D,
+                                      double E, double F) {
 
         /**
          * The formula we are going to work with is: X = (A^-1)*B. In our
-         * program they will be represented by: matrixX =
-         * (1/det*matrxiASwapped)*(matrixB)
+         * program they will be represented by: 
+         * matrixX = (1/det*matrxiASwapped)*(matrixB)
          */
 
 // Variables of the Equation ---------------------------------------------------
@@ -63,7 +64,7 @@ public class TwoByTwo {
          * MatrixASwapped multiplied by MatrixB = (A*B).
          *
          * @sum: is the result of the multiplication of the elements of the
-         * matrices added to each other
+         * matrices added to each other.
          */
         double[][] matrixAB = new double[2][1];
         double sum = 0;
@@ -82,7 +83,10 @@ public class TwoByTwo {
          * rest of the equation.
          */
         if (det == 0) {
-            JOptionPane.showMessageDialog(null, "Determinant is equal to zero!\nEquation cannot be computed!");
+            matrixX[0][0] = POSITIVE_INFINITY;
+            matrixX[1][0] = POSITIVE_INFINITY;
+            JOptionPane.showMessageDialog(null, "Determinant is equal to zero!"
+                                            + "\nEquation cannot be computed!");
         } else {
             //Matrix X will receive the values of 1/det*(matrixASwapped*matrixB)
             matrixX[0][0] = (1 / det) * matrixAB[0][0];

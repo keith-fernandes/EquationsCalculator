@@ -6,6 +6,7 @@
 package FrameOptions;
 
 import FrameMenus.AdminMenu;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -33,6 +34,39 @@ public class EditAdminInfo extends javax.swing.JFrame {
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
         welcomeLabel.setText("Hi, " + admin);
+        /**
+         * This piece of code will populate the fields with place holders.
+         * Getting the users information and allowing them to change only what
+         * they want.
+         */
+        try {
+            //Connecting to the database
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+            String check = "Select * from users where username=?";
+
+            PreparedStatement pstCheck = con.prepareStatement(check);
+
+            pstCheck.setString(1, welcomeLabel.getText().substring(4).trim());
+
+            ResultSet rs = pstCheck.executeQuery();
+            if (rs.next()) {
+                String lastname = rs.getString("lastname").substring(0, 1).toUpperCase() + rs.getString("lastname").substring(1);
+                String firstname = rs.getString("firstname").substring(0, 1).toUpperCase() + rs.getString("firstname").substring(1);
+                String usernameS = rs.getString("username");
+
+                firstNameField.setText(firstname);
+                firstNameField.setForeground(Color.gray);
+                lastNameField.setText(lastname);
+                lastNameField.setForeground(Color.gray);
+                usernameField.setText(usernameS);
+                usernameField.setForeground(Color.gray);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Something went wrong!" + e);
+        }
     }
 
     /**
@@ -192,84 +226,138 @@ public class EditAdminInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_backRegisterActionPerformed
 
     private void saveRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveRegisterActionPerformed
+
         /**
-         * This button will save the new data typed.
+         * This button will save the new data typed. When the user clicks SAVE,
+         * a pop up to confirm or cancel will appear.
          */
-
-        //Getting the data typed and inputting into variables.
-        String name = firstNameField.getText().trim();
-        String lastname = lastNameField.getText().trim();
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-
-        //This condition will verify if any of the fields are empty.
-        if (name.isEmpty() || lastname.isEmpty() || username.isEmpty() || password.isEmpty()) {
-            warningRegistration.setText("All fields are required, please complete your details.");
+        Object[] options = {"SAVE", "CANCEL"};
+        int opt = JOptionPane.showOptionDialog(EditAdminInfo.this, "Do you want to save your new details?",
+                " Admin Updating Profile ",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        //Option 'CANCEL' takes the user back to editing.
+        if (opt == JOptionPane.NO_OPTION) {
+            this.setVisible(true);
+            //Option 'SAVE' will run the saving code.
         } else {
 
-            try {
-                
-                //Connecting to the database
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
-                String check = "Select * from users where username=?";
-                /**
-                 * Statement that will receive the query. First we will check if
-                 * the username already exists in the database
-                 */
-                PreparedStatement pstCheck = con.prepareStatement(check);
+            //Getting the data typed and inputting into variables.       
+            String name = firstNameField.getText().trim();
+            String lastname = lastNameField.getText().trim();
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
+            String currentUser = welcomeLabel.getText().substring(4).trim().substring(0, 1).toLowerCase() + welcomeLabel.getText().substring(5).trim();
 
-                pstCheck.setString(1, usernameField.getText());
+            //This condition will verify if any of the fields are empty.
+            if (name.isEmpty() || lastname.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                warningRegistration.setText("All fields are required, please complete your details.");
+            } else {
 
-                ResultSet rs = pstCheck.executeQuery();
-                /**
-                 * Condition in case username is already taken.
-                 */
-                if (rs.next()) {
-                    JOptionPane.showMessageDialog(null, "\nUpdate Not Successful\n Username already taken!");
-                    pstCheck.close();
-
-                } else {
+                try {
+                    //Connecting to the database
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+                    String check = "Select * from users where username=?";
                     /**
-                     * If username is not taken. We will prepare another query,
-                     * this time to update the new info.
+                     * Statement that will receive the query. First we will
+                     * check if the admin's username already exists in the database
                      */
-                    String add = "update users set username=?, password=?, firstname=?, lastname=? where username=?";
+                    PreparedStatement pstCheck = con.prepareStatement(check);
 
-                    PreparedStatement pstAdd = con.prepareStatement(add);
+                    pstCheck.setString(1, username);
 
-                    /**
-                     * Passing the variables with the new info. -- Name and
-                     * Lastname were also set to have a first letter uppercase.
-                     * -- Used the username in the greeting label as a parameter
-                     * to find the current username in the database.
-                     */
-                    pstAdd.setString(1, username);
-                    pstAdd.setString(2, password);
-                    pstAdd.setString(3, name.substring(0, 1).toUpperCase() + name.substring(1));
-                    pstAdd.setString(4, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
-                    pstAdd.setString(5, welcomeLabel.getText().substring(4).trim());
+                    ResultSet rs = pstCheck.executeQuery();
 
-                    pstAdd.execute();
+                    if (rs.next()) {
+                        /**
+                         * If it already exists. We'll check if the admin is
+                         * trying to save the same username they have.If not, 
+                         * the username is already taken and cannot be used.
+                         */
+                        if (!username.equals(currentUser)) {
+                            JOptionPane.showMessageDialog(null, "Username already taken");
+                        } else {
+                            /**
+                             * If so. We will prepare another query, this time 
+                             * to update the new info (except for the username).
+                             */
+                            String add = "update users set password=?, firstname=?, lastname=? where username=?";
 
-                    JOptionPane.showMessageDialog(null, "Update Successful");
-                    /**
-                     * This will take the Admin back to its Menu after editing
-                     * its info. -- It will also pass the username, with first
-                     * letter uppercase, as parameter to be used in the greeting
-                     * label and for tracking the current user
-                     */
-                    AdminMenu menu = new AdminMenu(username.substring(0, 1).toUpperCase() + username.substring(1));
-                    menu.setVisible(true);
-                    setVisible(false);
+                            PreparedStatement pstAdd = con.prepareStatement(add);
 
-                    pstAdd.close();
-                    con.close();
+                            /**
+                             * Passing the variables with the new info. -- Name
+                             * and Lastname were also set to have a first letter
+                             * uppercase. -- Used the username in the greeting
+                             * label as a parameter to find the current username
+                             * in the database.
+                             */
+                            pstAdd.setString(1, password);
+                            pstAdd.setString(2, name.substring(0, 1).toUpperCase() + name.substring(1));
+                            pstAdd.setString(3, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
+                            pstAdd.setString(4, currentUser);
+
+                            pstAdd.execute();
+
+                            JOptionPane.showMessageDialog(null, "Update Successful");
+                            /**
+                             * This will take the User back to its Menu after
+                             * editing its info. -- It will also pass the
+                             * username, with first letter uppercase, as
+                             * parameter to be used in the greeting label and
+                             * for tracking the current user
+                             */
+                            AdminMenu menu = new AdminMenu(username.substring(0, 1).toUpperCase() + username.substring(1));
+                            menu.setVisible(true);
+                            setVisible(false);
+
+                            pstAdd.close();
+                            con.close();
+                        }
+                    } else {
+                        /**
+                         * If the username is different than the current one.
+                         * We will proceed with the updating normally.
+                         */
+                        String add = "update users set username=?, password=?, firstname=?, lastname=? where username=?";
+
+                        PreparedStatement pstAdd = con.prepareStatement(add);
+
+                        /**
+                         * Passing the variables with the new info. -- Name and
+                         * Lastname were also set to have a first letter
+                         * uppercase. -- Used the username in the greeting label
+                         * as a parameter to find the current username in the
+                         * database.
+                         */
+                        pstAdd.setString(1, username);
+                        pstAdd.setString(2, password);
+                        pstAdd.setString(3, name.substring(0, 1).toUpperCase() + name.substring(1));
+                        pstAdd.setString(4, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
+                        pstAdd.setString(5, currentUser);
+
+                        pstAdd.execute();
+
+                        JOptionPane.showMessageDialog(null, "Update Successful");
+                        /**
+                         * This will take the User back to its Menu after
+                         * editing its info. -- It will also pass the username,
+                         * with first letter uppercase, as parameter to be used
+                         * in the greeting label and for tracking the current
+                         * user
+                         */
+                        AdminMenu menu = new AdminMenu(username.substring(0, 1).toUpperCase() + username.substring(1));
+                        menu.setVisible(true);
+                        setVisible(false);
+
+                        pstAdd.close();
+                        con.close();
+
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Update Not Successful\n" + e);
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e + "\nUpdate Not Successful");
             }
-
         }
     }//GEN-LAST:event_saveRegisterActionPerformed
 

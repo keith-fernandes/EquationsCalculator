@@ -204,7 +204,7 @@ public class RegistrationPage extends javax.swing.JFrame {
                 * Condition in case username is already taken.
                 */
                 if (rs.next()) {
-                    JOptionPane.showMessageDialog(null, "\nRegistration Not Successful\n Username already taken!");
+                    JOptionPane.showMessageDialog(null, "\nRegistration Not Successful!\nUsername already taken. Try again.");
                     pstCheck.close();
 
                 } else {
@@ -245,7 +245,7 @@ public class RegistrationPage extends javax.swing.JFrame {
                     con.close();
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e + "\nRegistration Not Successful");
+                JOptionPane.showMessageDialog(null, "\nRegistration Not Successful\n" + e);
             }
 
         }

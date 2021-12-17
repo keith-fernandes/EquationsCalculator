@@ -6,7 +6,7 @@
 package FrameOptions;
 
 import FrameMenus.MainMenu;
-import Utilities.FillTable;
+import Utilities.Utilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -52,23 +52,24 @@ public class History extends javax.swing.JFrame {
              * This query will collect the information to be displayed in our
              * list.
              */
-            String results = "SELECT equation1 as 'Equation 1', equation2 as 'Equation 2', equation3 as 'Equation 3', results as Result from calculator where iduser=? order by equation3 desc";
+            String results = "SELECT equation1 as 'Equation 1', equation2 as 'Equation 2', "
+                    + "equation3 as 'Equation 3', results as Result from calculator where "
+                    + "iduser=? order by equation3 desc";
 
             pst = con.prepareStatement(results);
             pst.setInt(1, iduser);
 
             ResultSet rs = pst.executeQuery();
             String query = String.valueOf(rs.getStatement()).substring(43);
-            System.out.println(query);
             /**
              * Using FillTable to create this table and display the list of
              * users.
              */
-            FillTable.FillTable(tableOfUserResults, query);
+            Utilities.FillTable(tableOfUserResults, query);
             con.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, "Something went wrong!\n"+e);
         }
         
     }

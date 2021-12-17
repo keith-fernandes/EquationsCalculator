@@ -6,10 +6,13 @@
 package FrameCalculations;
 
 import Calculations.ThreeByThree;
+import Calculations.TwoByTwo;
 import FrameMenus.CalculationMenu;
 import FrameOptions.History;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import static java.lang.Double.POSITIVE_INFINITY;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,9 +27,10 @@ import javax.swing.JOptionPane;
 public class Calc3x3 extends javax.swing.JFrame {
 
     /**
-     * Creates new form Calc3x3.
-     * Set new dimensions and a center position for the window.
-     * @username - Variable we used to track and interact with the User.
+     * Creates new form Calc3x3. Set new dimensions and a center position for
+     * the window.
+     *
+     * @param username - Variable we used to track and interact with the User.
      */
     public Calc3x3(String username) {
         initComponents();
@@ -54,9 +58,7 @@ public class Calc3x3 extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         varK = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         varJ = new javax.swing.JTextField();
         varL = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -84,9 +86,14 @@ public class Calc3x3 extends javax.swing.JFrame {
         varXresult = new javax.swing.JLabel();
         varYresult = new javax.swing.JLabel();
         varZresult = new javax.swing.JLabel();
+        determinantError = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         warning = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 204, 0));
 
         backButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         backButton.setText("BACK");
@@ -118,6 +125,17 @@ public class Calc3x3 extends javax.swing.JFrame {
         title.setText("Equation Calculator");
         title.setAlignmentY(0.0F);
 
+        varG.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varG.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setText("Equation 3");
 
@@ -130,13 +148,38 @@ public class Calc3x3 extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel13.setText("Z =");
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("e.g. 5x +(-2)y+(-7)=2 will be 5x - 2y -7 = 2");
+        varK.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varK.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("If value of Y is negative, add a minus symbol in front of the value");
+        varJ.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varJ.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
+        varL.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varL.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel9.setText("X +");
@@ -155,8 +198,41 @@ public class Calc3x3 extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Insert the numeric values for the two equations");
 
+        varH.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varH.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
+        varC.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("X +");
+
+        varI.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
 
         calculateButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         calculateButton.setText("Calculate");
@@ -172,6 +248,39 @@ public class Calc3x3 extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("X +");
 
+        varF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
+        varE.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
+        varD.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varD.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("Equation 2");
 
@@ -183,6 +292,28 @@ public class Calc3x3 extends javax.swing.JFrame {
         clearFieldsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearFieldsButtonActionPerformed(evt);
+            }
+        });
+
+        varB.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varB.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
+            }
+        });
+
+        varA.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                varAFocusGained(evt);
+            }
+        });
+        varA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varAKeyReleased(evt);
             }
         });
 
@@ -201,31 +332,35 @@ public class Calc3x3 extends javax.swing.JFrame {
         varZresult.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         varZresult.setText("Z = ");
 
+        determinantError.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        determinantError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(determinantError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(varZresult, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(varYresult, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                            .addComponent(varXresult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(varZresult)
-                    .addComponent(varYresult)
-                    .addComponent(varXresult, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(310, Short.MAX_VALUE))
         );
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {varXresult, varYresult, varZresult});
-
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(labelResult, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(determinantError, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
                 .addComponent(varXresult, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(varYresult)
@@ -236,6 +371,42 @@ public class Calc3x3 extends javax.swing.JFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {varXresult, varYresult, varZresult});
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("If values of Y and Z are negative, add a minus symbol in front of the value");
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("e.g. 5x +(-2)y+(-7)=2      .:      5x - 2y -7 = 2");
+
+        warning.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        warning.setForeground(new java.awt.Color(255, 51, 51));
+        warning.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(warning, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(warning, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15)
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -243,8 +414,9 @@ public class Calc3x3 extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(115, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -312,14 +484,7 @@ public class Calc3x3 extends javax.swing.JFrame {
                         .addGap(107, 107, 107))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(189, 189, 189))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(warning, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGap(151, 151, 151))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,9 +493,9 @@ public class Calc3x3 extends javax.swing.JFrame {
                 .addComponent(title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(varJ, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,15 +532,11 @@ public class Calc3x3 extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(warning, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(history, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -391,169 +552,198 @@ public class Calc3x3 extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         /**
-        * Back button will take the user back to the Calculation menu and
-        * dispose of the current menu. It will also give the name of the User
-        * as a parameter to be used in the greeting label.
-        */
+         * Back button will take the user back to the Calculation menu and
+         * dispose of the current menu. It will also give the name of the User
+         * as a parameter to be used in the greeting label.
+         */
         CalculationMenu calcMenu = new CalculationMenu(welcomeLabel.getText().substring(4).trim());
         calcMenu.setVisible(true);
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
-     /**
-     * This button will calculate the equations according to input given by the user.
+    /**
+     * This button will calculate the equations according to input given by the
+     * user.
+     *
      * @param evt - click.
      */
     private void saveCalcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveCalcButtonActionPerformed
-
-        if (varXresult.getText().length() < 5) {
-            JOptionPane.showMessageDialog(null, "\nThere is nothing to save");
+        /**
+         * Saving the results of a calculation. We check if there is a result by
+         * measuring the size of the output of the result textfields
+         * (varXresult and labelResult).
+         */
+        if (varXresult.getText().length() < 5 && labelResult.getText().length() < 8) {
+            JOptionPane.showMessageDialog(null, "\nThere is no result to save"
+                    + "\nComplete the equations and press CALCULATE button.");
+            warning.setText("All fields must be filled correctly. Check them again, please!");
         } else {
-            double A, B, C, D, E, F, G, H, I, J, K, L;
+            double  A, B, C,
+                    D, E, F,
+                    G, H, I,
+                    
+                    J, K, L;
             int iduser = 0;
             String equation1 = null, equation2 = null, equation3 = null;
             String result = varXresult.getText() + "   " + varYresult.getText() + "   " + varZresult.getText();
+            if (labelResult.getText().length() >= 8) {
+                result = "NO SOLUTION! Determinant = ZERO.";
+            }
             try {
-                
-                    A = converter(varA.getText());
-                    B = converter(varB.getText());
-                    C = converter(varC.getText());
+                /**
+                 * Getting the text input from the user and parsing into double.
+                 * Using the Converter method from the class Utilities.
+                 */
+                A = Double.parseDouble(varA.getText());
+                B = Double.parseDouble(varB.getText());
+                C = Double.parseDouble(varC.getText());
 
-                    D = converter(varD.getText());
-                    E = converter(varE.getText());
-                    F = converter(varF.getText());
+                D = Double.parseDouble(varD.getText());
+                E = Double.parseDouble(varE.getText());
+                F = Double.parseDouble(varF.getText());
 
-                    G = converter(varG.getText());
-                    H = converter(varH.getText());
-                    I = converter(varI.getText());
+                G = Double.parseDouble(varG.getText());
+                H = Double.parseDouble(varH.getText());
+                I = Double.parseDouble(varI.getText());
 
-                    J = converter(varJ.getText());
-                    K = converter(varK.getText());
-                    L = converter(varL.getText());
+                J = Double.parseDouble(varJ.getText());
+                K = Double.parseDouble(varK.getText());
+                L = Double.parseDouble(varL.getText());
 
-                    Double[] variables = {A, B, C,
-                        D, E, F,
-                        G, H, I,
-                        J, K, L};
-                    String[] formated = new String[12];
+                //An array Double to receive the numeric values of the input
+                Double[] variables = {A, B, C,
+                                      D, E, F,
+                                      G, H, I,
+                                      J, K, L};
+                //An array String to receive the text version of the values
+                String[] formated = new String[12];
 
-                    for (int i = 0; i < 12; i++) {
-                        Double d = variables[i];
-                        String str = String.valueOf(d).split("\\.")[1];
+                /**
+                 * For loop to check if the variables are decimal or integer. It
+                 * will then allocate their text format (with or without a
+                 * comma) in the array.
+                 */
+                for (int i = 0; i < 12; i++) {
+                    Double d = variables[i];
+                    String str = String.valueOf(d).split("\\.")[1];
 
-                        if (str.equals("0")) {
-                            formated[i] = " " + d.longValue();
-                        } else {
-                            formated[i] = " " + variables[i];
-                        }
+                    if (str.equals("0")) {
+                        formated[i] = " " + d.longValue();
+                    } else {
+                        formated[i] = " " + variables[i];
                     }
+                }
+                 /**
+                 * This condition will verify if the numbers are negative or
+                 * positive. This will help us to save the correct format of the
+                 * equation, by adding a 'minus' symbol instead of the default
+                 * 'plus'.
+                 *
+                 */
+                //ALL NEGATIVE
+                if (formated[1].contains("-") && formated[2].contains("-")) {
+                    equation1 = formated[0] + "x " + formated[1] + "y " + formated[2] + "z " + "= " + formated[9];
+                //ALL POSITIVE
+                } else if (!formated[1].contains("-") && !formated[2].contains("-")) {
+                    equation1 = formated[0] + "x " + "+" + formated[1] + "y " +  "+" + formated[2] +"z " + "=" + formated[9];
+                //Z NEGATIVE
+                } else if (!formated[1].contains("-") && formated[2].contains("-")) {
+                    equation1 = formated[0] + "x " + "+" + formated[1] + "y " + formated[2] + "z " + "=" + formated[9];
+                //Y NEGATIVE
+                } else if(formated[1].contains("-") && !formated[2].contains("-")) {
+                    equation1 = formated[0] + "x " + formated[1] + "y " + "+" + formated[2] + "z " + "=" + formated[9];
+                }
 
-                    for (int i = 0; i < 12; i++) {
-                        System.out.println(formated[i]);
-                    }
+                //ALL NEGATIVE
+                if (formated[4].contains("-") && formated[5].contains("-")) {
+                    equation2 = formated[3] + "x " + formated[4] + "y " + formated[5] + "z " + "=" + formated[10];
+                //ALL POSITIVE
+                } else if (!formated[4].contains("-") && !formated[5].contains("-")) {
+                    equation2 = formated[3] + "x " + "+" + formated[4] + "y " + "+" +formated[5] +  "z " + "=" + formated[10];
+                //Z NEGATIVE
+                } else if (!formated[4].contains("-") && formated[5].contains("-")) {
+                    equation2 = formated[3] + "x " + "+" + formated[4] + "y " + formated[5] + "z " + "=" + formated[10];
+                //Y NEGATIVE
+                } else if (formated[4].contains("-") && !formated[5].contains("-")) {
+                    equation2 = formated[3] + "x " + formated[4] + "y " + "+" + formated[5] + "z " + "=" + formated[10];
+                }
 
-                    //ALL NEGATIVE
-                    if (formated[1].contains("-") && formated[2].contains("-")) {
-                        equation1 = formated[0] + "x " + formated[1] + "y " + formated[2] + "z " + "= " + formated[9];
-                        //NONE NEGATIVE
-                    } else if (!formated[1].contains("-") && !formated[2].contains("-")) {
-                        equation1 = formated[0] + "x " + "+" + formated[1] + "y " + formated[2] + "+" + "z " + "= " + formated[9];
-                        //Z NEGATIVE
-                    } else if (!formated[1].contains("-") && formated[2].contains("-")) {
-                        equation1 = formated[0] + "x " + "+" + formated[1] + "y " + formated[2] + "z " + "= " + formated[9];
-                        //Y NEGATIVE
-                    } else if (formated[1].contains("-") && !formated[2].contains("-")) {
-                        equation1 = formated[0] + "x " + formated[1] + "y " + "+" + formated[2] + "z " + "= " + formated[9];
-                    }
+                //ALL NEGATIVE
+                if (formated[7].contains("-") && formated[8].contains("-")) {
+                    equation3 = formated[6] + "x " + formated[7] + "y " + formated[8] + "z " + "=" + formated[11];
+                //ALL POSITIVE
+                } else if (!formated[7].contains("-") && !formated[8].contains("-")) {
+                    equation3 = formated[6] + "x " + "+" + formated[7] + "y " + "+" +  formated[8] + "z " + "=" + formated[11];
+                //Z NEGATIVE
+                } else if (!formated[7].contains("-") && formated[8].contains("-")) {
+                    equation3 = formated[6] + "x " + "+" + formated[7] + "y " + formated[8] + "z " + "=" + formated[11];
+                //Y NEGATIVE
+                } else if (formated[7].contains("-") && !formated[8].contains("-")) {
+                    equation3 = formated[6] + "x " + formated[7] + "y " + "+" + formated[8] + "z " + "=" + formated[11];
+                }
 
-                    //ALL NEGATIVE
-                    if (formated[4].contains("-") && formated[5].contains("-")) {
-                        equation2 = formated[3] + "x " + formated[4] + "y " + formated[5] + "z " + "= " + formated[10];
-                        //NONE NEGATIVE
-                    } else if (!formated[4].contains("-") && !formated[5].contains("-")) {
-                        equation2 = formated[3] + "x " + "+" + formated[4] + "y " + formated[5] + "+" + "z " + "= " + formated[10];
-                        //Z NEGATIVE
-                    } else if (!formated[4].contains("-") && formated[5].contains("-")) {
-                        equation2 = formated[3] + "x " + "+" + formated[4] + "y " + formated[5] + "z " + "= " + formated[10];
-                        //Y NEGATIVE
-                    } else if (formated[4].contains("-") && !formated[5].contains("-")) {
-                        equation2 = formated[3] + "x " + formated[4] + "y " + "+" + formated[5] + "z " + "= " + formated[10];
-                    }
+                try {
+                    //Connecting to the database
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
 
-                    //ALL NEGATIVE
-                    if (formated[7].contains("-") && formated[8].contains("-")) {
-                        equation3 = formated[6] + "x " + formated[7] + "y " + formated[8] + "z " + "= " + formated[10];
-                        //NONE NEGATIVE
-                    } else if (!formated[7].contains("-") && !formated[8].contains("-")) {
-                        equation3 = formated[6] + "x " + "+" + formated[7] + "y " + formated[8] + "+" + "z " + "= " + formated[10];
-                        //Z NEGATIVE
-                    } else if (!formated[7].contains("-") && formated[8].contains("-")) {
-                        equation3 = formated[6] + "x " + "+" + formated[7] + "y " + formated[8] + "z " + "= " + formated[10];
-                        //Y NEGATIVE
-                    } else if (formated[7].contains("-") && !formated[8].contains("-")) {
-                        equation3 = formated[6] + "x " + formated[7] + "y " + "+" + formated[8] + "z " + "= " + formated[10];
-                    }
+                    String check = "SELECT * FROM calculator WHERE equation1=? and equation2=? and equation3=? and results=?";
+                    PreparedStatement pstCheck = con.prepareStatement(check);
 
-                    try {
-                        //Connecting to the database
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+                    pstCheck.setString(1, equation1);
+                    pstCheck.setString(2, equation2);
+                    pstCheck.setString(3, equation3);
+                    pstCheck.setString(4, result);
 
-                        String check = "SELECT * FROM calculator WHERE equation1=? and equation2=? and equation3=? and results=?";
-                        PreparedStatement pstCheck = con.prepareStatement(check);
+                    ResultSet rs = pstCheck.executeQuery();
 
-                        pstCheck.setString(1, equation1);
-                        pstCheck.setString(2, equation2);
-                        pstCheck.setString(3, equation3);
-                        pstCheck.setString(4, result);
+                    //Check if the equation has been done and saved before.
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(null, "\nEquations already saved!\nCheck your history.");
+                    } else {
+                        //Select the User and store the equations and results
+                        String checkUser = "SELECT iduser FROM users WHERE username=?";
+                        String addEquation = "INSERT INTO calculator (iduser,equation1,equation2,equation3,results) VALUES (?, ?, ?, ?, ?)";
 
-                        ResultSet rs = pstCheck.executeQuery();
+                        PreparedStatement pst = con.prepareStatement(checkUser);
+
+                        pst.setString(1, welcomeLabel.getText().substring(4).trim());
+
+                        rs = pst.executeQuery();
 
                         if (rs.next()) {
-                            JOptionPane.showMessageDialog(null, "\nEquations already saved!\nCheck your history.");
+                            //Identifying the user to link the equations to be saved.
+                            iduser = rs.getInt("iduser");
+                        }
+
+                        pst = con.prepareStatement(addEquation);
+
+                        pst.setInt(1, iduser);
+                        pst.setString(2, equation1);
+                        pst.setString(3, equation2);
+                        pst.setString(4, equation3);
+                        pst.setString(5, result);
+
+                        if (pst.executeUpdate() != 0) {
+                            JOptionPane.showMessageDialog(null, "\nEquations Saved");
                             clearVars();
+                            pst.close();
+
                         } else {
 
-                            String checkUser = "SELECT iduser FROM users WHERE username=?";
-                            String addEquation = "INSERT INTO calculator (iduser,equation1,equation2,equation3,results) VALUES (?, ?, ?, ?, ?)";
+                            JOptionPane.showMessageDialog(null, "Something went wrong");
 
-                            PreparedStatement pst = con.prepareStatement(checkUser);
-
-                            pst.setString(1, welcomeLabel.getText().substring(4).trim());
-
-                            rs = pst.executeQuery();
-
-                            if (rs.next()) {
-                                iduser = rs.getInt("iduser");
-                            }
-
-                            pst = con.prepareStatement(addEquation);
-
-                            pst.setInt(1, iduser);
-                            pst.setString(2, equation1);
-                            pst.setString(3, equation2);
-                            pst.setString(4, equation3);
-                            pst.setString(5, result);
-
-                            if (pst.executeUpdate() != 0) {
-                                JOptionPane.showMessageDialog(null, "\nEquations Saved");
-                                clearVars();
-                                pst.close();
-
-                            } else {
-
-                                JOptionPane.showMessageDialog(null, "Something went wrong");
-
-                                pst.close();
-                                con.close();
-                            }
+                            pst.close();
+                            con.close();
                         }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, e + "\nSaving Not Successful");
                     }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e + "\nSaving Not Successful");
+                }
             } catch (NumberFormatException e) {
+                //In case the user types something that is not a valid number, or leaves the field empty.
                 JOptionPane.showMessageDialog(null, "\nOne or more values are not numbers or are missing!\nTry again!");
-                clearVars();
+                warning.setText("All fields must be filled correctly. Check them again, please!");
             }
         }
 
@@ -562,9 +752,9 @@ public class Calc3x3 extends javax.swing.JFrame {
     private void historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyActionPerformed
         // TODO add your handling code here:
         /**
-         * This button will take the user to its History of calculations.
-         * It will also pass the name of the User as a parameter to be used 
-         * in the greeting label.
+         * This button will take the user to its History of calculations. It
+         * will also pass the name of the User as a parameter to be used in the
+         * greeting label.
          */
         History newList = new History(welcomeLabel.getText().substring(4).trim());
         newList.setVisible(true);
@@ -573,44 +763,95 @@ public class Calc3x3 extends javax.swing.JFrame {
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         // TODO add your handling code here:
-        double A, B, C,
-        D, E, F,
-        G, H, I,
-        //RESULT MATRIX
-        J, K, L;
-        //        String equation1, equation2;
+        double  A, B, C,
+                D, E, F,
+                G, H, I,
+                J, K, L;
+
         try {
-            //EQ 1
+            /**
+             * Getting the text input from the user and parsing into double.
+             * Using the Converter method from the class Utilities.
+             */
+            //MATRIX A - EQ 1
             A = Double.parseDouble(varA.getText());
             B = Double.parseDouble(varB.getText());
             C = Double.parseDouble(varC.getText());
-            //EQ 2
+            //MATRIX A - EQ 2
             D = Double.parseDouble(varD.getText());
             E = Double.parseDouble(varE.getText());
             F = Double.parseDouble(varF.getText());
-            //EQ 3
+            //MATRIX A - EQ 3
             G = Double.parseDouble(varG.getText());
             H = Double.parseDouble(varH.getText());
             I = Double.parseDouble(varI.getText());
-            //RESULT MATRIX
+            //MATRIX B - EQ Result
             J = Double.parseDouble(varJ.getText());
             K = Double.parseDouble(varK.getText());
             L = Double.parseDouble(varL.getText());
 
-            if (A == 0 || B == 0 || C == 0
-                || D == 0 || E == 0 || F == 0
-                || G == 0 || H == 0 || I == 0) {
-                JOptionPane.showMessageDialog(null, "Values of X, Y and Z CANNOT be 0");
+            /**
+             * Condition to verify if the user typed 2 equations instead of 3.
+             * Meaning it created a 2x2 calculation, so we would have to
+             * calculate them using the class we created for it.
+             */
+            if (C == 0 && F == 0 && G == 0 && H == 0 && I == 0 && L == 0) {
+
+                double[][] result = TwoByTwo.twoBytwo(A, B, D, E, J, K);
+                if (result[0][0] == POSITIVE_INFINITY && result[1][0] == POSITIVE_INFINITY) {
+                    labelResult.setText("Result: NO SOLUTION!");
+                    determinantError.setText("Determinant equals to zero.");
+                    varXresult.setText(" ");
+                    varYresult.setText(" ");
+                    varZresult.setText(" ");
+                } else {
+
+                    DecimalFormat df = new DecimalFormat("####0.00");
+                    labelResult.setText("Result:");
+                    determinantError.setText(" ");
+                    for (int i = 0; i < 2; i++) {
+                        for (int j = 0; j < 1; j++) {
+                            Double d = result[i][j];
+                            String str = String.valueOf(d).split("\\.")[1];
+                            if (i == 0) {
+                                if (str.equals("0")) {
+                                    varXresult.setText("X= " + d.longValue());
+                                } else {
+                                    varXresult.setText("X= " + df.format(result[0][0]));
+                                }
+                            } else if (i == 1) {
+                                if (str.equals("0")) {
+                                    varYresult.setText("Y= " + d.longValue());
+                                } else {
+                                    varYresult.setText("Y= " + df.format(result[1][0]));
+
+                                }
+                            }
+
+                        }
+
+                    }
+                    varZresult.setText(" ");
+
+                }
             } else {
-                //THREEBYTHREE METHOD
+                /**
+                 * Calling method threeBythree to solve the equations. It will
+                 * pass the variables collected as parameters.
+                 */
                 double[][] result = ThreeByThree.threeBythree(A, B, C, D, E, F, G, H, I, J, K, L);
-                DecimalFormat df = new DecimalFormat("####0.00");
-                if(result[0][0]==0 && result[1][0]==0 && result[2][0]==0){
-                    labelResult.setText("Result: indeterminate!");
-                    varXresult.setText("X = 0");
-                    varYresult.setText("Y = 0");
-                    varZresult.setText("Y = 0");
-                }else{
+                
+                //Condition if the Determinant is equal to zero.
+                if (result[0][0] == POSITIVE_INFINITY && result[1][0] == POSITIVE_INFINITY && result[2][0] == POSITIVE_INFINITY) {
+                    labelResult.setText("Result: NO SOLUTION!");
+                    determinantError.setText("Determinant equals to zero.");
+                    varXresult.setText(" ");
+                    varYresult.setText(" ");
+                    varZresult.setText(" ");
+                } else {
+                    DecimalFormat df = new DecimalFormat("####0.00");
+                    labelResult.setText("Result:");
+                    determinantError.setText(" ");
 
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 1; j++) {
@@ -618,30 +859,30 @@ public class Calc3x3 extends javax.swing.JFrame {
                             String str = String.valueOf(d).split("\\.")[1];
                             switch (i) {
                                 case 0:
-                                if (str.equals("0")) {
-                                    varXresult.setText("X = " + d.longValue());
-                                } else {
-                                    varXresult.setText("X = " + df.format(result[0][0]));
-                                }
-                                break;
+                                    if (str.equals("0")) {
+                                        varXresult.setText("X = " + d.longValue());
+                                    } else {
+                                        varXresult.setText("X = " + df.format(result[0][0]));
+                                    }
+                                    break;
                                 case 1:
-                                if (str.equals("0")) {
-                                    varYresult.setText("Y = " + d.longValue());
-                                } else {
-                                    varYresult.setText("Y = " + df.format(result[1][0]));
+                                    if (str.equals("0")) {
+                                        varYresult.setText("Y = " + d.longValue());
+                                    } else {
+                                        varYresult.setText("Y = " + df.format(result[1][0]));
 
-                                }
-                                break;
+                                    }
+                                    break;
                                 case 2:
-                                if (str.equals("0")) {
-                                    varZresult.setText("Z = " + d.longValue());
-                                } else {
-                                    varZresult.setText("Z = " + df.format(result[1][0]));
+                                    if (str.equals("0")) {
+                                        varZresult.setText("Z = " + d.longValue());
+                                    } else {
+                                        varZresult.setText("Z = " + df.format(result[2][0]));
 
-                                }
-                                break;
+                                    }
+                                    break;
                                 default:
-                                break;
+                                    break;
                             }
 
                         }
@@ -652,18 +893,18 @@ public class Calc3x3 extends javax.swing.JFrame {
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "\nOne or more values are not numbers or are missing!\nTry again!");
-            clearVars();
+            warning.setText("All fields must be filled correctly. Check them again, please!");
         }
 
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void clearFieldsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearFieldsButtonActionPerformed
         /**
-        * This button clears the fields so the user can start over.
-        */
+         * This button clears the fields so the user can start over.
+         */
         Object[] options = {"Save your result", "Clear without saving"};
         int opt = JOptionPane.showOptionDialog(Calc3x3.this, "What would you like to do?", " You are clearing the fields ",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
         if (opt == JOptionPane.YES_OPTION) {
             //Option Save Results
@@ -673,10 +914,28 @@ public class Calc3x3 extends javax.swing.JFrame {
             clearVars();
         }
     }//GEN-LAST:event_clearFieldsButtonActionPerformed
+
+    private void varAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_varAKeyReleased
+        /**
+         * It will clear the input mistake warning once the user start typing
+         * again.
+         */
+        warning.setText("");
+    }//GEN-LAST:event_varAKeyReleased
+
+    private void varAFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_varAFocusGained
+         /**
+         * It will clear the input mistake warning once the user clicks on any
+         * field again.
+         */
+         warning.setText("");
+    }//GEN-LAST:event_varAFocusGained
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     public javax.swing.JButton calculateButton;
     private javax.swing.JButton clearFieldsButton;
+    private javax.swing.JLabel determinantError;
     private javax.swing.JButton history;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -694,6 +953,7 @@ public class Calc3x3 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelResult;
     private javax.swing.JButton saveCalcButton;
     private javax.swing.JLabel title;
@@ -716,7 +976,7 @@ public class Calc3x3 extends javax.swing.JFrame {
     private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables
 
-private void clearVars() {
+    private void clearVars() {
         varA.setText("");
         varB.setText("");
         varC.setText("");
@@ -733,11 +993,8 @@ private void clearVars() {
         varYresult.setText("Y = ");
         varZresult.setText("Z = ");
         labelResult.setText("Result:");
+        determinantError.setText("");
+        warning.setText("");
 
     }
-
-    private Double converter(String x) {
-        return (x == null || x.isEmpty()) ? 0 : Double.parseDouble(x);
-    }
-
 }

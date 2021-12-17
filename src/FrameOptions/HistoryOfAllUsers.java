@@ -6,7 +6,7 @@
 package FrameOptions;
 
 import FrameMenus.AdminMenu;
-import Utilities.FillTable;
+import Utilities.Utilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -50,11 +50,11 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
              * Using FillTable to create this table and display the list of
              * users.
              */
-            FillTable.FillTable(historyOfUsersCalculations, calculations);
+            Utilities.FillTable(historyOfUsersCalculations, calculations);
             con.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, "Soemthing went wrong!\n"+e);
         }
         
     }
@@ -158,7 +158,6 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void backRegister1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backRegister1ActionPerformed
         /**
         * Back button will take the user back to its menu and dispose of the
@@ -169,7 +168,6 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
         menu.setVisible(true);
         dispose();
     }//GEN-LAST:event_backRegister1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backRegister1;
     private javax.swing.JTable historyOfUsersCalculations;

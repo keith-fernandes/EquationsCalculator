@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author kcfke
  */
-public class FillTable {
+public class Utilities {
 
     /**
      * This method will populate the tables in the ListOfUsers, History and
@@ -51,6 +51,6 @@ public class FillTable {
             conn.close();
         } catch (SQLException e) {
         }
+        
     }
-
 }
