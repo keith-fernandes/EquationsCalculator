@@ -6,7 +6,7 @@
 package FrameOptions;
 
 import FrameMenus.AdminMenu;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,10 +29,10 @@ public class DeleteUser extends javax.swing.JFrame {
      */
     public DeleteUser(String admin) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("User: " + admin);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK2.png");
+        this.setIconImage(icon);
     }
 
     /**
@@ -53,6 +53,7 @@ public class DeleteUser extends javax.swing.JFrame {
         deletionTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Remove user");
 
         confirmRemoveButton.setText("CONFIRM REMOVE");
         confirmRemoveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -61,7 +62,8 @@ public class DeleteUser extends javax.swing.JFrame {
             }
         });
 
-        warningEmptyUser.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        warningEmptyUser.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        warningEmptyUser.setForeground(new java.awt.Color(255, 51, 51));
         warningEmptyUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         backRegister.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -78,12 +80,12 @@ public class DeleteUser extends javax.swing.JFrame {
 
         title.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("Function Calculator");
+        title.setText("Equation Calculator");
         title.setAlignmentY(0.0F);
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        welcomeLabel.setText("ADMIN MENU - Current Admin:");
+        welcomeLabel.setText("ADMIN MENU");
 
         deletionTextField.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         deletionTextField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -138,21 +140,21 @@ public class DeleteUser extends javax.swing.JFrame {
     private void confirmRemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmRemoveButtonActionPerformed
         //This string will hold the username to be deleted
         String username = deletionTextField.getText().trim();
-        
+
         //Check to see if field is not empty
         if (username.isEmpty()) {
             warningEmptyUser.setText("*Username for deletion required");
         } else {
             /**
-             * Deletion confirmation.
-             * Displays a message to the Admin to confirm the action.
+             * Deletion confirmation. Displays a message to the Admin to confirm
+             * the action.
              */
             Object[] options = {"REMOVE", "CANCEL"};
             int opt = JOptionPane.showOptionDialog(DeleteUser.this,
                     "Removing the user will also remove all his calculations"
                     + "\nAre you sure you want to remove '" + username + "' from the list of users?",
                     " CAUTION! Action irreversible! ",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
             //Option 'CANCEL' takes the Admin back.
             if (opt == JOptionPane.NO_OPTION) {
                 this.setVisible(true);
@@ -161,7 +163,7 @@ public class DeleteUser extends javax.swing.JFrame {
                 try {
                     //connecting to the database
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
                     /**
                      * This query will check if the user exists.
                      */
@@ -178,7 +180,8 @@ public class DeleteUser extends javax.swing.JFrame {
                      * the user can type again.
                      */
                     if (!rs.next()) {
-                        JOptionPane.showMessageDialog(null, "\n Action Not Successful\nUsername doesn't exist!");
+                        JOptionPane.showMessageDialog(null, "Username doesn't exist!", 
+                                                 "Failed", JOptionPane.ERROR_MESSAGE);
                         deletionTextField.setText("");
                         deletionTextField.requestFocus();
                         pstCheck.close();
@@ -188,7 +191,8 @@ public class DeleteUser extends javax.swing.JFrame {
                          * the field so the user can type again.
                          */
                     } else if (rs.getString("userAdmin").equals("YES")) {
-                        JOptionPane.showMessageDialog(null, "\n Action Not Successful\nYou can't remove an Admin!");
+                        JOptionPane.showMessageDialog(null, "You can't remove an Admin!\n", 
+                                                      "Failed", JOptionPane.ERROR_MESSAGE);
                         deletionTextField.setText("");
                         deletionTextField.requestFocus();
                         pstCheck.close();
@@ -220,7 +224,8 @@ public class DeleteUser extends javax.swing.JFrame {
                          * to the field in case the Admin wants to remove
                          * another user.
                          */
-                        JOptionPane.showMessageDialog(null, "Action Successful\nUser '" + username + "' removed from database");
+                        JOptionPane.showMessageDialog(null, "User '" + username + "' removed from database", 
+                                                    "Action Successful\n", JOptionPane.INFORMATION_MESSAGE);
                         deletionTextField.setText("");
                         deletionTextField.requestFocus();
 
@@ -229,7 +234,7 @@ public class DeleteUser extends javax.swing.JFrame {
                     }
 
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e + "\nAction Not Successful");
+                    JOptionPane.showMessageDialog(null, e,"\nAction Not Successful",JOptionPane.ERROR_MESSAGE);
                 }
             }
         }

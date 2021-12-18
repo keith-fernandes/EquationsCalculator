@@ -9,8 +9,9 @@ import FrameOptions.DeleteUser;
 import FrameOptions.EditAdminInfo;
 import FrameOptions.HistoryOfAllUsers;
 import FrameOptions.ListOfUsers;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,10 +28,10 @@ public class AdminMenu extends javax.swing.JFrame {
      */
     public AdminMenu(String admin) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Welcome, " + admin);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK2.png");
+        this.setIconImage(icon);
     }
 
     /**
@@ -52,6 +53,7 @@ public class AdminMenu extends javax.swing.JFrame {
         listOfUsersButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Admin Menu");
 
         removeUserButton.setText("REMOVE USER");
         removeUserButton.setAlignmentY(0.0F);
@@ -185,6 +187,7 @@ public class AdminMenu extends javax.swing.JFrame {
         * Logout button will take the user back to the Login page and dispose
         * of the Admin Menu.
         */
+        JOptionPane.showMessageDialog(null, "See you later, Boss!");
         LoginPage newLogin = new LoginPage();
         newLogin.setVisible(true);
         dispose();

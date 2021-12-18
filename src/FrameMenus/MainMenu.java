@@ -7,8 +7,9 @@ package FrameMenus;
 
 import FrameOptions.EditInfo;
 import FrameOptions.History;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,10 +26,10 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu(String username) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Welcome, " + username);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK1.png");
+        this.setIconImage(icon);
     }
 
     /**
@@ -49,6 +50,7 @@ public class MainMenu extends javax.swing.JFrame {
         logOutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Main Menu");
 
         title.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -173,6 +175,7 @@ public class MainMenu extends javax.swing.JFrame {
          * Logout button will take the user back to the Login page and dispose
          * of the Main Menu.
          */
+        JOptionPane.showMessageDialog(null, "See you later, "+welcomeLabel.getText().substring(8).trim()+"!");
         LoginPage newLogin = new LoginPage();
         newLogin.setVisible(true);
         dispose();

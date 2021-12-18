@@ -6,8 +6,7 @@
 package FrameMenus;
 
 import FrameOptions.RegistrationPage;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -27,12 +26,12 @@ public class LoginPage extends javax.swing.JFrame {
      * the middle of the screen.
      *
      */
-    
     public LoginPage() {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
+        this.pack();
+        Image icon = Toolkit.getDefaultToolkit().getImage("dk_icon.png");
+        this.setIconImage(icon);
 
     }
 
@@ -58,9 +57,7 @@ public class LoginPage extends javax.swing.JFrame {
         userWarning = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Login Page");
-        setBackground(new java.awt.Color(255, 102, 102));
-        setForeground(new java.awt.Color(255, 102, 102));
+        setTitle("Login");
 
         passwordWarning.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 51, 51));
@@ -103,8 +100,9 @@ public class LoginPage extends javax.swing.JFrame {
         });
 
         newUsers.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        newUsers.setForeground(new java.awt.Color(153, 153, 153));
         newUsers.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        newUsers.setText("FOR NEW USERS");
+        newUsers.setText("NEW USERS");
 
         passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -194,8 +192,8 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         /**
-        * These conditions will check if the username or password are empty.
-        */
+         * These conditions will check if the username or password are empty.
+         */
         if (usernameField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {
             userWarning.setText("Username is invalid");
             passwordWarning.setText("Password is invalid");
@@ -208,34 +206,34 @@ public class LoginPage extends javax.swing.JFrame {
 
             try {
                 /**
-                * Connection to the database.
-                */
+                 * Connection to the database.
+                 */
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
                 String sql = "Select * from users where username=? and password=?";
 
                 /**
-                * Statement that will receive the query. First we will check if
-                * the username exists in the database
-                */
+                 * Statement that will receive the query. First we will check if
+                 * the username exists in the database
+                 */
                 PreparedStatement pst = con.prepareStatement(sql);
                 /**
-                * Passing username and password parameters.
-                */
+                 * Passing username and password parameters.
+                 */
                 pst.setString(1, usernameField.getText());
                 pst.setString(2, passwordField.getText());
 
                 /**
-                * The Result set will contain the result of the query.
-                */
+                 * The Result set will contain the result of the query.
+                 */
                 ResultSet rs = pst.executeQuery();
 
                 /**
-                * Condition to check if the user is an admin. Getting the data
-                * from the ResultSet, if userAdmin = YES, we will direct the admin
-                * to its Menu, if userAdmin = NO, that means it is a regular
-                * user, we will direct it to the regular menu
-                */
+                 * Condition to check if the user is an admin. Getting the data
+                 * from the ResultSet, if userAdmin = YES, we will direct the
+                 * admin to its Menu, if userAdmin = NO, that means it is a
+                 * regular user, we will direct it to the regular menu
+                 */
                 if (rs.next()) {
                     if (rs.getString("userAdmin").equals("YES")) {
 
@@ -253,24 +251,23 @@ public class LoginPage extends javax.swing.JFrame {
 
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Login Denied");
-                    usernameField.setText("");
-                    passwordField.setText("");
+                    JOptionPane.showMessageDialog(null, "Check your credentials!", 
+                                        "Login Denied", JOptionPane.ERROR_MESSAGE);
                 }
                 con.close();
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
+                JOptionPane.showMessageDialog(null, e, "Something went wrong!", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
         // TODO add your handling code here:
-                /**
-        * In case of new users. This button will take them to the registration
-        * page and dispose of the login page.
-        */
+        /**
+         * In case of new users. This button will take them to the registration
+         * page and dispose of the login page.
+         */
         RegistrationPage newUser = new RegistrationPage();
         newUser.setVisible(true);
         dispose();
@@ -278,9 +275,9 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
         /**
-        * This event will do the same thing as the login button. It is just a
-        * shortcut: instead of clicking, the user can just press ENTER.
-        */
+         * This event will do the same thing as the login button. It is just a
+         * shortcut: instead of clicking, the user can just press ENTER.
+         */
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             loginButtonActionPerformed(null);
         }
@@ -318,12 +315,12 @@ public class LoginPage extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-           
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            public void run() {                
                 new LoginPage().setVisible(true);
-                
+
             }
         });
     }

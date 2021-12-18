@@ -124,8 +124,8 @@ public class ThreeByThree {
             matrixX[0][0] = POSITIVE_INFINITY;
             matrixX[1][0] = POSITIVE_INFINITY;
             matrixX[2][0] = POSITIVE_INFINITY;
-            JOptionPane.showMessageDialog(null, "Determinant is equal to zero!"
-                                            + "\nEquation cannot be computed!");
+            JOptionPane.showMessageDialog(null, "Determinant is equal to zero!", 
+                   "Equation cannot be computed!", JOptionPane.WARNING_MESSAGE);
         /**
          * If not.
          * We proceed with the calculations normally.

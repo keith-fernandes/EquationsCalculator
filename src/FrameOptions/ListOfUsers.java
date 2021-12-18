@@ -6,12 +6,11 @@
 package FrameOptions;
 import FrameMenus.AdminMenu;
 import Utilities.Utilities;
-import java.awt.Dimension;
+import static Utilities.Utilities.*;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 
@@ -22,7 +21,7 @@ import javax.swing.JOptionPane;
 public class ListOfUsers extends javax.swing.JFrame {
 
     /**
-     * Creates new form ListOfUsers - and apply dimensions to set the window in
+     * Creates new form ListOfUsers - and set the window in
      * the middle of the screen
      *
      * @param admin - name of the current connected Admin for greeting and
@@ -30,15 +29,15 @@ public class ListOfUsers extends javax.swing.JFrame {
      */
     public ListOfUsers(String admin) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("User: " + admin);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK2.png");
+        this.setIconImage(icon);
 
         try {
             //Connecting to the database
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
             /**
              * This query will collect the information to be displayed in our
              * list.
@@ -50,10 +49,11 @@ public class ListOfUsers extends javax.swing.JFrame {
              * Imports FillTable method to create and populate the table.
              */
             Utilities.FillTable(tableOfUsers, sql);
+            setColumnsWidth(this.tableOfUsers, 480, 30, 30, 30, 10);
             con.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Something went wrong!\n"+e);
+            JOptionPane.showMessageDialog(null, e, "Something went wrong!", JOptionPane.ERROR_MESSAGE);
         }
     }
     /**
@@ -73,6 +73,7 @@ public class ListOfUsers extends javax.swing.JFrame {
         tableOfUsers = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Active Users");
 
         listLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         listLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -80,12 +81,12 @@ public class ListOfUsers extends javax.swing.JFrame {
 
         title.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("Function Calculator");
+        title.setText("Equation Calculator");
         title.setAlignmentY(0.0F);
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        welcomeLabel.setText("ADMIN MENU - Connected Admin:");
+        welcomeLabel.setText("ADMIN MENU");
 
         backRegister1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         backRegister1.setText("BACK");
@@ -112,6 +113,10 @@ public class ListOfUsers extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableOfUsers.setRowHeight(25);
+        tableOfUsers.setRowMargin(4);
+        tableOfUsers.setSelectionBackground(new java.awt.Color(255, 102, 102));
+        tableOfUsers.setSelectionForeground(new java.awt.Color(255, 255, 153));
         jScrollPane1.setViewportView(tableOfUsers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,11 +142,11 @@ public class ListOfUsers extends javax.swing.JFrame {
                 .addComponent(title)
                 .addGap(18, 18, 18)
                 .addComponent(welcomeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(26, 26, 26)
                 .addComponent(listLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(backRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );

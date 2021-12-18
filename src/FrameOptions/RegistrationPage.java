@@ -7,7 +7,7 @@ package FrameOptions;
 
 import FrameMenus.LoginPage;
 import FrameMenus.MainMenu;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,9 +27,9 @@ public class RegistrationPage extends javax.swing.JFrame {
      */
     public RegistrationPage() {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK1.png");
+        this.setIconImage(icon);
     }
 
     /**
@@ -56,6 +56,7 @@ public class RegistrationPage extends javax.swing.JFrame {
         backRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registration");
 
         warningRegistration.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         warningRegistration.setForeground(new java.awt.Color(255, 51, 51));
@@ -189,7 +190,7 @@ public class RegistrationPage extends javax.swing.JFrame {
             try {
                 //Connecting to the database
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
                 String check = "Select * from users where username=?";
                 /**
                 * Statement that will receive the query. First we will check if
@@ -204,10 +205,18 @@ public class RegistrationPage extends javax.swing.JFrame {
                 * Condition in case username is already taken.
                 */
                 if (rs.next()) {
-                    JOptionPane.showMessageDialog(null, "\nRegistration Not Successful!\nUsername already taken. Try again.");
+                    JOptionPane.showMessageDialog(null, "\nRegistration Not Successful!\nUsername already taken. Try again.",
+                                                  "Oops", JOptionPane.ERROR_MESSAGE);
                     pstCheck.close();
 
                 } else {
+                    if(password.length()<6){
+                        JOptionPane.showMessageDialog(null, "Password MUST be at least 6 characters long", 
+                                                        "Password too short",JOptionPane.WARNING_MESSAGE);
+                         this.setVisible(true);
+                         passwordField.setText("");
+                         passwordField.requestFocus();
+                    }else{
                     /**
                     * If username is not taken. We will prepare another query,
                     * this time to insert the new info and create a user.
@@ -230,7 +239,8 @@ public class RegistrationPage extends javax.swing.JFrame {
 
                     pstAdd.execute();
 
-                    JOptionPane.showMessageDialog(null, "Registration Successful");
+                    JOptionPane.showMessageDialog(null, "Welcome '"+username.substring(0, 1).toUpperCase()+username.substring(1)+"'", 
+                                                     "Registration Successful!", JOptionPane.PLAIN_MESSAGE);
                     /**
                     * This will take the new User to its Menu after creating
                     * its profile. -- It will also pass the username, with
@@ -244,8 +254,9 @@ public class RegistrationPage extends javax.swing.JFrame {
                     pstAdd.close();
                     con.close();
                 }
+              }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "\nRegistration Not Successful\n" + e);
+                JOptionPane.showMessageDialog(null, "\nRegistration Not Successful\n" + e,"Oops", JOptionPane.ERROR_MESSAGE);
             }
 
         }

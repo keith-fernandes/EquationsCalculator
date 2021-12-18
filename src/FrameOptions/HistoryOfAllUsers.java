@@ -7,7 +7,8 @@ package FrameOptions;
 
 import FrameMenus.AdminMenu;
 import Utilities.Utilities;
-import java.awt.Dimension;
+import static Utilities.Utilities.*;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,16 +26,16 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
      */
     public HistoryOfAllUsers(String admin) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Hi, " + admin);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK2.png");
+        this.setIconImage(icon);
         
         
         try {
             //Connecting to the database
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
             /**
              * This query will collect the information to be displayed in our
              * list.
@@ -51,10 +52,11 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
              * users.
              */
             Utilities.FillTable(historyOfUsersCalculations, calculations);
+             setColumnsWidth(this.historyOfUsersCalculations, 480, 18, 18, 18, 45, 1);
             con.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Soemthing went wrong!\n"+e);
+            JOptionPane.showMessageDialog(null, e, "Something went wrong!", JOptionPane.ERROR_MESSAGE);
         }
         
     }
@@ -76,6 +78,7 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
         backRegister1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Past Calculations - All users");
 
         historyOfUsersCalculations.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         historyOfUsersCalculations.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -95,10 +98,11 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        historyOfUsersCalculations.setGridColor(new java.awt.Color(255, 102, 102));
+        historyOfUsersCalculations.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         historyOfUsersCalculations.setRowHeight(25);
         historyOfUsersCalculations.setRowMargin(4);
-        historyOfUsersCalculations.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        historyOfUsersCalculations.setSelectionBackground(new java.awt.Color(255, 102, 102));
+        historyOfUsersCalculations.setSelectionForeground(new java.awt.Color(255, 255, 153));
         historyOfUsersCalculations.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(historyOfUsersCalculations);
 
@@ -108,11 +112,11 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
 
         listLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         listLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        listLabel.setText("History of Calculations");
+        listLabel.setText("All Past Calculations");
 
         title.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("Function Calculator");
+        title.setText("Equation Calculator");
         title.setAlignmentY(0.0F);
 
         backRegister1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -149,8 +153,8 @@ public class HistoryOfAllUsers extends javax.swing.JFrame {
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(listLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addGap(73, 73, 73)
                 .addComponent(backRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())

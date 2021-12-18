@@ -7,7 +7,7 @@ package FrameMenus;
 
 import FrameCalculations.Calc2x2;
 import FrameCalculations.Calc3x3;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 /**
@@ -18,17 +18,17 @@ public class CalculationMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form Calculation - and apply dimensions to set the window in
-     * the middle of the screen
+     * the middle of the screen, as well as an icon image.
      *
      * @param username - name of the current connected User for greeting and
      * tracking purposes
      */
     public CalculationMenu(String username) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Hi, " + username);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK1.png");
+        this.setIconImage(icon);
     }
 
     /**
@@ -48,6 +48,7 @@ public class CalculationMenu extends javax.swing.JFrame {
         calculationMenuLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Calculation Options");
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -88,7 +89,7 @@ public class CalculationMenu extends javax.swing.JFrame {
 
         calculationMenuLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         calculationMenuLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        calculationMenuLabel.setText("CHOOSE YOUR FUNCTION TYPE");
+        calculationMenuLabel.setText("CHOOSE YOUR EQUATION TYPE");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

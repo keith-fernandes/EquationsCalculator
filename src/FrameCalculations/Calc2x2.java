@@ -8,7 +8,8 @@ package FrameCalculations;
 import Calculations.TwoByTwo;
 import FrameMenus.CalculationMenu;
 import FrameOptions.History;
-import java.awt.Dimension;
+import static Utilities.Utilities.formated;
+import java.awt.Image;
 import java.awt.Toolkit;
 import static java.lang.Double.POSITIVE_INFINITY;
 import java.sql.Connection;
@@ -26,16 +27,17 @@ public class Calc2x2 extends javax.swing.JFrame {
 
     /**
      * Creates new form Calc2x2. Set new dimensions and a center position for
-     * the window.
+     * the window, as well as an icon image.
      *
-     * @username - Variable we used to track and interact with the User.
+     * @param username - Variable we used to track and interact with the User.
+     *
      */
     public Calc2x2(String username) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Hi, " + username);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK1.png");
+        this.setIconImage(icon);
     }
 
     /**
@@ -81,8 +83,13 @@ public class Calc2x2 extends javax.swing.JFrame {
         n2 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Calculation of Simultaneous Equations");
+        setBackground(new java.awt.Color(255, 255, 255));
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -222,12 +229,12 @@ public class Calc2x2 extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("e.g. 5x +(-2)y=2    .:   5x - 2y = 2");
+        jLabel5.setText("e.g. (5)x + (-2)y + (-5) = 2    .:   5x - 2y -5 = 2");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(153, 153, 153));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("If value of Y is negative, add a minus symbol in front of the value");
+        jLabel4.setText("If any value is negative, add a minus symbol in front of it");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("Y ");
@@ -301,6 +308,15 @@ public class Calc2x2 extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel13.setText("=");
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("If there is only x, y and = values, add a ZERO on the third space.");
+
+        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
+
+        jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -309,6 +325,8 @@ public class Calc2x2 extends javax.swing.JFrame {
                 .addContainerGap(142, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(119, 119, 119))
+            .addComponent(warning, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
+            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(187, 187, 187)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,43 +369,49 @@ public class Calc2x2 extends javax.swing.JFrame {
                     .addComponent(varF, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(varE, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(117, 117, 117)
-                            .addComponent(saveCalcButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(clearFieldsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(history)
-                            .addGap(18, 18, 18)
-                            .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(91, 91, 91))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(116, 116, 116))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(welcomeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addContainerGap()))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator2)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(warning, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(welcomeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(0, 105, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(saveCalcButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(clearFieldsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(history)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(91, 91, 91))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(116, 116, 116)))))
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(197, 197, 197)
+                .addGap(166, 166, 166)
+                .addComponent(warning, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(varA, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(varB, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -409,7 +433,17 @@ public class Calc2x2 extends javax.swing.JFrame {
                     .addComponent(n2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(varF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(120, 120, 120))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,11 +456,7 @@ public class Calc2x2 extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(62, 62, 62)
                     .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(83, 83, 83)
-                    .addComponent(jLabel4)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(history, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -435,11 +465,6 @@ public class Calc2x2 extends javax.swing.JFrame {
                             .addComponent(saveCalcButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(clearFieldsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(33, 33, 33)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(298, 298, 298)
-                    .addComponent(warning, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(401, Short.MAX_VALUE)))
         );
 
         pack();
@@ -467,7 +492,7 @@ public class Calc2x2 extends javax.swing.JFrame {
             N2 = Double.parseDouble(n2.getText());
             E = Double.parseDouble(varE.getText()) + (N1 * (-1));
             F = Double.parseDouble(varF.getText()) + (N2 * (-1));
-
+            System.out.println(E + F);
             /**
              * Calling method twoBytwo to solve the equations. It will pass the
              * variables collected as parameters.
@@ -494,6 +519,15 @@ public class Calc2x2 extends javax.swing.JFrame {
                  */
                 labelResult.setText("Result:");
                 determinantError.setText(" ");
+                /**
+                 * ************************************************************************************************
+                 * This code was based on a post from Vishnu Suresh, on 10 July
+                 * 2017 to a forum discussion on StackOverflow web site,
+                 * available here:
+                 * https://stackoverflow.com/questions/10620448/most-simple-code-to-populate-jtable-from-resultset
+                 * and from Santiago, on 13 March 2012, available here:
+                 * https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+                 */
                 DecimalFormat df = new DecimalFormat("####0.00");
 
                 for (int i = 0; i < 2; i++) {
@@ -519,7 +553,8 @@ public class Calc2x2 extends javax.swing.JFrame {
 
         } catch (NumberFormatException e) {
             //In case the user types something that is not a valid number.
-            JOptionPane.showMessageDialog(null, "\nOne or more values are not numbers or are missing!\nTry again!");
+            JOptionPane.showMessageDialog(null,"One or more values are not numbers or are missing!\nTry again!", 
+                                                                              "Failed", JOptionPane.ERROR_MESSAGE);
             warning.setText("All fields must be filled correctly. Check them again, please!");
         }
     }//GEN-LAST:event_calculateButtonActionPerformed
@@ -533,7 +568,7 @@ public class Calc2x2 extends javax.swing.JFrame {
         //------------------- Option 1-(Left)----- Option 2-(Right)-------------
         Object[] options = {"Save your result", "Clear without saving"};
         int opt = JOptionPane.showOptionDialog(Calc2x2.this, "What would you like to do?", " You are clearing the fields ",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
         //Option Save Results
         if (opt == JOptionPane.YES_OPTION) {
             saveCalcButtonActionPerformed(null);
@@ -561,8 +596,8 @@ public class Calc2x2 extends javax.swing.JFrame {
          * and labelResult).
          */
         if (varXresult.getText().length() < 5 && labelResult.getText().length() < 8) {
-            JOptionPane.showMessageDialog(null, "\nThere is no result to save"
-                    + "\nComplete the equations and press CALCULATE button.");
+            JOptionPane.showMessageDialog(null, "Complete the equations and press CALCULATE button.", 
+                                            "There is no result to save",JOptionPane.WARNING_MESSAGE);
             warning.setText("All fields must be filled correctly. Check them again, please!");
 
         } else {
@@ -588,15 +623,20 @@ public class Calc2x2 extends javax.swing.JFrame {
                 D = Double.parseDouble(varD.getText());
                 E = Double.parseDouble(varE.getText());
                 F = Double.parseDouble(varF.getText());
-                
+                System.out.println(E + F);
+
                 /**
-                 * If the extra numbers in the equations are zero.
-                 * Then we don't need to display them when saving.
+                 * If the extra numbers in the equations are zero. Then we don't
+                 * need to display them when saving.
                  */
                 if (N1 == 0 && N2 == 0) {
 
                     Double[] variables = {A, B, C, D, E, F};
 
+                    /**
+                     * An array String to receive the text version of the
+                     * values. It will call the method from utilities.
+                     */
                     String[] formated = formated(variables);
                     /**
                      * This condition will verify if the numbers are negative or
@@ -622,11 +662,10 @@ public class Calc2x2 extends javax.swing.JFrame {
                         equation2 = formated[2] + "x" + "+" + formated[3] + "y" + " = " + formated[5];
                     }
                     /**
-                     * If they are not zero.
-                     * This will format them.
+                     * If they are not zero. This will format them.
                      */
                 } else {
-                                        
+
                     Double[] variables = {A, B, N1, C, D, N2, E, F};
 
                     String[] formated = formated(variables);
@@ -635,8 +674,7 @@ public class Calc2x2 extends javax.swing.JFrame {
                     if (formated[1].contains("-") && formated[2].contains("-")) {
                         equation1 = formated[0] + "x" + formated[1] + "y" + formated[2] + " = " + formated[6];
                         //ALL POSITIVE
-                    } else if (!formated[1].contains("-") && !formated[2].contains("-")&& variables[2]!=0) {
-                        System.out.println("ALL POSITIVE");
+                    } else if (!formated[1].contains("-") && !formated[2].contains("-") && variables[2] != 0) {
                         equation1 = formated[0] + "x" + "+" + formated[1] + "y" + "+" + formated[2] + " = " + formated[6];
                         //N NEGATIVE
                     } else if (!formated[1].contains("-") && formated[2].contains("-")) {
@@ -645,7 +683,7 @@ public class Calc2x2 extends javax.swing.JFrame {
                     } else if (formated[1].contains("-") && !formated[2].contains("-")) {
                         equation1 = formated[0] + "x" + formated[1] + "y" + "+" + formated[2] + " = " + formated[6];
                         //N is ZERO
-                    } else if (variables[2]==0) {
+                    } else if (variables[2] == 0) {
                         //and Y NEGATIVE
                         if (formated[1].contains("-")) {
                             equation1 = formated[0] + "x" + formated[1] + "y" + " = " + formated[6];
@@ -659,7 +697,7 @@ public class Calc2x2 extends javax.swing.JFrame {
                     if (formated[4].contains("-") && formated[5].contains("-")) {
                         equation2 = formated[3] + "x" + formated[4] + "y" + formated[5] + " = " + formated[7];
                         //ALL POSITIVE
-                    } else if (!formated[4].contains("-") && !formated[5].contains("-") && variables[5]!=0) {
+                    } else if (!formated[4].contains("-") && !formated[5].contains("-") && variables[5] != 0) {
                         equation2 = formated[3] + "x" + "+" + formated[4] + "y" + "+" + formated[5] + " = " + formated[7];
                         //N NEGATIVE
                     } else if (!formated[4].contains("-") && formated[5].contains("-")) {
@@ -668,7 +706,7 @@ public class Calc2x2 extends javax.swing.JFrame {
                     } else if (formated[4].contains("-") && !formated[5].contains("-")) {
                         equation2 = formated[3] + "x" + formated[4] + "y" + "+" + formated[5] + " = " + formated[7];
                         //N is ZERO
-                    } else if (variables[5]==0) {
+                    } else if (variables[5] == 0) {
                         //and Y NEGATIVE
                         if (formated[4].contains("-")) {
                             equation1 = formated[3] + "x" + formated[4] + "y" + " = " + formated[7];
@@ -681,36 +719,38 @@ public class Calc2x2 extends javax.swing.JFrame {
                 try {
                     //Connecting to the database
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
-                    String check = "SELECT * FROM calculator WHERE equation1=? and equation2=? and results=?";
-                    PreparedStatement pstCheck = con.prepareStatement(check);
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", 
+                                                                                                    "root", "root");
+                    
+                    String checkUser = "SELECT iduser FROM users WHERE username=?";
+                    String checkEQ = "SELECT * FROM calculator WHERE equation1=? and equation2=? and results=? and iduser=?";
 
+                    PreparedStatement pstCheck = con.prepareStatement(checkUser);
+                    pstCheck.setString(1, welcomeLabel.getText().substring(4).trim().toLowerCase());
+
+                    ResultSet rs = pstCheck.executeQuery();
+                    if (rs.next()) {
+                        iduser = rs.getInt("iduser");
+                    }
+
+                    pstCheck = con.prepareStatement(checkEQ);
                     pstCheck.setString(1, equation1);
                     pstCheck.setString(2, equation2);
                     pstCheck.setString(3, result);
+                    pstCheck.setInt(4, iduser);
 
-                    ResultSet rs = pstCheck.executeQuery();
+                    rs = pstCheck.executeQuery();
 
                     //Check if the equation has been done and saved before.
                     if (rs.next()) {
-                        JOptionPane.showMessageDialog(null, "\nEquation already saved!\nCheck your history.");
+                        JOptionPane.showMessageDialog(null, "\nEquation already saved!\nCheck your history.",
+                                                                    "Duplicate", JOptionPane.WARNING_MESSAGE);
                     } else {
                         //Select the User and store the equations and results
-                        String checkUser = "SELECT iduser FROM users WHERE username=?";
-                        String addEquation = "INSERT INTO calculator (iduser, equation1, equation2, results) VALUES (?, ?, ?, ?)";
+                        String addEquation = "INSERT INTO calculator (iduser, equation1, equation2, results) "
+                                                                                    + "VALUES (?, ?, ?, ?)";
 
-                        PreparedStatement pst = con.prepareStatement(checkUser);
-
-                        pst.setString(1, welcomeLabel.getText().substring(4).trim());
-
-                        rs = pst.executeQuery();
-
-                        if (rs.next()) {
-                            //Identifying the user to link the equations to be saved.
-                            iduser = rs.getInt("iduser");
-                        }
-
-                        pst = con.prepareStatement(addEquation);
+                        PreparedStatement pst = con.prepareStatement(addEquation);
 
                         pst.setInt(1, iduser);
                         pst.setString(2, equation1);
@@ -718,24 +758,27 @@ public class Calc2x2 extends javax.swing.JFrame {
                         pst.setString(4, result);
 
                         if (pst.executeUpdate() != 0) {
-                            JOptionPane.showMessageDialog(null, "\nResult Saved");
+                            JOptionPane.showMessageDialog(null, "Result Saved to database", 
+                                                "Success!", JOptionPane.INFORMATION_MESSAGE);
                             clearVars();
                             pst.close();
 
                         } else {
 
-                            JOptionPane.showMessageDialog(null, "Something went wrong");
+                            JOptionPane.showMessageDialog(null, "Result was not saved!",
+                                      "Something went wrong", JOptionPane.ERROR_MESSAGE);
 
                             pst.close();
                             con.close();
                         }
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e + "\nSaving Not Successful");
+                    JOptionPane.showMessageDialog(null, e, "\nSaving Not Successful", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException e) {
                 //In case the user types something that is not a valid number or leaves any field empty..
-                JOptionPane.showMessageDialog(null, "\nOne or more values are not numbers or are missing!\nTry again!");
+               JOptionPane.showMessageDialog(null,"One or more values are not numbers or are missing!\nTry again!", 
+                                                                              "Failed", JOptionPane.ERROR_MESSAGE);
                 warning.setText("All fields must be filled. Check them again, please!");
             }
         }
@@ -780,6 +823,7 @@ public class Calc2x2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -789,6 +833,8 @@ public class Calc2x2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel labelResult;
     private javax.swing.JTextField n1;
     private javax.swing.JTextField n2;
@@ -825,32 +871,5 @@ public class Calc2x2 extends javax.swing.JFrame {
         determinantError.setText("");
         warning.setText("");
 
-    }
-    /**
-     * Method to format the input into the equations display.
-     * @param variables - the array of input variables.
-     * @return - an array of formated strings.
-     */
-    public static String[] formated(Double[] variables) {
- 
-        //An array String to receive the text version of the values
-        String[] formated = new String[variables.length];
-
-        /**
-         * For loop to check if the variables are decimal or integer. It will
-         * then allocate their text format (with or without a comma) in the
-         * array.
-         */
-        for (int i = 0; i < variables.length; i++) {
-            Double d = variables[i];
-            String str = String.valueOf(d).split("\\.")[1];
-
-            if (str.equals("0")) {
-                formated[i] = " " + d.longValue();
-            } else {
-                formated[i] = " " + variables[i];
-            }
-        }
-        return formated;
     }
 }

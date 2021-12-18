@@ -85,8 +85,8 @@ public class TwoByTwo {
         if (det == 0) {
             matrixX[0][0] = POSITIVE_INFINITY;
             matrixX[1][0] = POSITIVE_INFINITY;
-            JOptionPane.showMessageDialog(null, "Determinant is equal to zero!"
-                                            + "\nEquation cannot be computed!");
+            JOptionPane.showMessageDialog(null, "Determinant is equal to zero!", 
+                   "Equation cannot be computed!", JOptionPane.WARNING_MESSAGE);
         } else {
             //Matrix X will receive the values of 1/det*(matrixASwapped*matrixB)
             matrixX[0][0] = (1 / det) * matrixAB[0][0];

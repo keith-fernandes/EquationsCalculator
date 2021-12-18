@@ -7,7 +7,7 @@ package FrameOptions;
 
 import FrameMenus.AdminMenu;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,10 +30,10 @@ public class EditAdminInfo extends javax.swing.JFrame {
      */
     public EditAdminInfo(String admin) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Hi, " + admin);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK2.png");
+        this.setIconImage(icon);
         /**
          * This piece of code will populate the fields with place holders.
          * Getting the users information and allowing them to change only what
@@ -42,7 +42,7 @@ public class EditAdminInfo extends javax.swing.JFrame {
         try {
             //Connecting to the database
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
             String check = "Select * from users where username=?";
 
             PreparedStatement pstCheck = con.prepareStatement(check);
@@ -65,7 +65,7 @@ public class EditAdminInfo extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Something went wrong!" + e);
+            JOptionPane.showMessageDialog(null, e, "Something went wrong!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -94,6 +94,7 @@ public class EditAdminInfo extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Details Update");
 
         title.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -107,6 +108,15 @@ public class EditAdminInfo extends javax.swing.JFrame {
         mainMenuLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mainMenuLabel.setText("EDIT YOUR INFORMATION");
 
+        firstNameField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                firstNameFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                usernameFieldFocusLost(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Password:");
 
@@ -118,8 +128,18 @@ public class EditAdminInfo extends javax.swing.JFrame {
             }
         });
 
-        warningRegistration.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        warningRegistration.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        warningRegistration.setForeground(new java.awt.Color(255, 51, 51));
         warningRegistration.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lastNameField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                lastNameFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                usernameFieldFocusLost(evt);
+            }
+        });
 
         saveRegister.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         saveRegister.setText("SAVE");
@@ -135,6 +155,15 @@ public class EditAdminInfo extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("First Name:");
+
+        usernameField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                usernameFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                usernameFieldFocusLost(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Last Name:");
@@ -256,11 +285,12 @@ public class EditAdminInfo extends javax.swing.JFrame {
                 try {
                     //Connecting to the database
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
                     String check = "Select * from users where username=?";
                     /**
                      * Statement that will receive the query. First we will
-                     * check if the admin's username already exists in the database
+                     * check if the admin's username already exists in the
+                     * database
                      */
                     PreparedStatement pstCheck = con.prepareStatement(check);
 
@@ -271,17 +301,73 @@ public class EditAdminInfo extends javax.swing.JFrame {
                     if (rs.next()) {
                         /**
                          * If it already exists. We'll check if the admin is
-                         * trying to save the same username they have.If not, 
+                         * trying to save the same username they have.If not,
                          * the username is already taken and cannot be used.
                          */
                         if (!username.equals(currentUser)) {
-                            JOptionPane.showMessageDialog(null, "Username already taken");
+                            JOptionPane.showMessageDialog(null, "Username already taken", "Failed", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            if (password.length() < 6) {
+                                JOptionPane.showMessageDialog(null, "Password MUST be at least 6 characters long",
+                                        "Password too short", JOptionPane.WARNING_MESSAGE);
+                                this.setVisible(true);
+                                passwordField.setText("");
+                                passwordField.requestFocus();
+                            } else {
+                                /**
+                                 * If so. We will prepare another query, this
+                                 * time to update the new info (except for the
+                                 * username).
+                                 */
+                                String add = "update users set password=?, firstname=?, lastname=? where username=?";
+
+                                PreparedStatement pstAdd = con.prepareStatement(add);
+
+                                /**
+                                 * Passing the variables with the new info. --
+                                 * Name and Lastname were also set to have a
+                                 * first letter uppercase. -- Used the username
+                                 * in the greeting label as a parameter to find
+                                 * the current username in the database.
+                                 */
+                                pstAdd.setString(1, password);
+                                pstAdd.setString(2, name.substring(0, 1).toUpperCase() + name.substring(1));
+                                pstAdd.setString(3, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
+                                pstAdd.setString(4, currentUser);
+
+                                pstAdd.execute();
+
+                                JOptionPane.showMessageDialog(null, "You kept your current Username.",
+                                        "Details Successfully Updated", JOptionPane.INFORMATION_MESSAGE);
+                                /**
+                                 * This will take the User back to its Menu
+                                 * after editing its info. -- It will also pass
+                                 * the username, with first letter uppercase, as
+                                 * parameter to be used in the greeting label
+                                 * and for tracking the current user
+                                 */
+                                AdminMenu menu = new AdminMenu(username.substring(0, 1).toUpperCase() + username.substring(1));
+                                menu.setVisible(true);
+                                setVisible(false);
+
+                                pstAdd.close();
+                                con.close();
+                            }
+                        }
+                    } else {
+                        //Check the size of the password
+                        if (password.length() < 6) {
+                            JOptionPane.showMessageDialog(null, "Password MUST be at least 6 characters long",
+                                    "Password too short", JOptionPane.WARNING_MESSAGE);
+                            this.setVisible(true);
+                            passwordField.setText("");
+                            passwordField.requestFocus();
                         } else {
                             /**
-                             * If so. We will prepare another query, this time 
-                             * to update the new info (except for the username).
+                             * If the username is different than the current
+                             * one. We will proceed with the updating normally.
                              */
-                            String add = "update users set password=?, firstname=?, lastname=? where username=?";
+                            String add = "update users set username=?, password=?, firstname=?, lastname=? where username=?";
 
                             PreparedStatement pstAdd = con.prepareStatement(add);
 
@@ -292,14 +378,16 @@ public class EditAdminInfo extends javax.swing.JFrame {
                              * label as a parameter to find the current username
                              * in the database.
                              */
-                            pstAdd.setString(1, password);
-                            pstAdd.setString(2, name.substring(0, 1).toUpperCase() + name.substring(1));
-                            pstAdd.setString(3, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
-                            pstAdd.setString(4, currentUser);
+                            pstAdd.setString(1, username);
+                            pstAdd.setString(2, password);
+                            pstAdd.setString(3, name.substring(0, 1).toUpperCase() + name.substring(1));
+                            pstAdd.setString(4, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
+                            pstAdd.setString(5, currentUser);
 
                             pstAdd.execute();
 
-                            JOptionPane.showMessageDialog(null, "Update Successful");
+                            JOptionPane.showMessageDialog(null, "'" + currentUser + "'" + "   is now   " + "'" + username + "'",
+                                    "Details Successfully Updated!", JOptionPane.INFORMATION_MESSAGE);
                             /**
                              * This will take the User back to its Menu after
                              * editing its info. -- It will also pass the
@@ -313,53 +401,35 @@ public class EditAdminInfo extends javax.swing.JFrame {
 
                             pstAdd.close();
                             con.close();
+
                         }
-                    } else {
-                        /**
-                         * If the username is different than the current one.
-                         * We will proceed with the updating normally.
-                         */
-                        String add = "update users set username=?, password=?, firstname=?, lastname=? where username=?";
-
-                        PreparedStatement pstAdd = con.prepareStatement(add);
-
-                        /**
-                         * Passing the variables with the new info. -- Name and
-                         * Lastname were also set to have a first letter
-                         * uppercase. -- Used the username in the greeting label
-                         * as a parameter to find the current username in the
-                         * database.
-                         */
-                        pstAdd.setString(1, username);
-                        pstAdd.setString(2, password);
-                        pstAdd.setString(3, name.substring(0, 1).toUpperCase() + name.substring(1));
-                        pstAdd.setString(4, lastname.substring(0, 1).toUpperCase() + lastname.substring(1));
-                        pstAdd.setString(5, currentUser);
-
-                        pstAdd.execute();
-
-                        JOptionPane.showMessageDialog(null, "Update Successful");
-                        /**
-                         * This will take the User back to its Menu after
-                         * editing its info. -- It will also pass the username,
-                         * with first letter uppercase, as parameter to be used
-                         * in the greeting label and for tracking the current
-                         * user
-                         */
-                        AdminMenu menu = new AdminMenu(username.substring(0, 1).toUpperCase() + username.substring(1));
-                        menu.setVisible(true);
-                        setVisible(false);
-
-                        pstAdd.close();
-                        con.close();
-
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Update Not Successful\n" + e);
+                    JOptionPane.showMessageDialog(null, e, "Update Not Successful\n", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
     }//GEN-LAST:event_saveRegisterActionPerformed
+
+    private void usernameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFieldFocusLost
+        firstNameField.setForeground(Color.gray);
+        lastNameField.setForeground(Color.gray);
+        usernameField.setForeground(Color.gray);
+    }//GEN-LAST:event_usernameFieldFocusLost
+
+    private void firstNameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_firstNameFieldFocusGained
+        firstNameField.setForeground(Color.black);
+
+    }//GEN-LAST:event_firstNameFieldFocusGained
+
+    private void lastNameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastNameFieldFocusGained
+        lastNameField.setForeground(Color.black);
+
+    }//GEN-LAST:event_lastNameFieldFocusGained
+
+    private void usernameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFieldFocusGained
+        usernameField.setForeground(Color.black);
+    }//GEN-LAST:event_usernameFieldFocusGained
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backRegister;

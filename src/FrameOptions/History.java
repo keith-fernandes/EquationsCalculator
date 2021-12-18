@@ -7,7 +7,8 @@ package FrameOptions;
 
 import FrameMenus.MainMenu;
 import Utilities.Utilities;
-import java.awt.Dimension;
+import static Utilities.Utilities.*;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,20 +23,24 @@ import javax.swing.JOptionPane;
 public class History extends javax.swing.JFrame {
 
     /**
-     * Creates new form History
+     * Creates new form History - and set the window in the
+     * middle of the screen, as well as an icon image.
+     *
+     * @param user - name of the current connected User for greeting and
+     * tracking purposes
      */
     public History(String user) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setLocationRelativeTo(null);
         welcomeLabel.setText("Hi, " + user);
+        Image icon = Toolkit.getDefaultToolkit().getImage("DK1.png");
+        this.setIconImage(icon);
         
         int iduser = 0;
         try {
             //Connecting to the database
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/EquationsCalculator", "root", "root");
 
             String checkUser = "SELECT iduser FROM users WHERE username=?";
             PreparedStatement pst = con.prepareStatement(checkUser);
@@ -66,10 +71,11 @@ public class History extends javax.swing.JFrame {
              * users.
              */
             Utilities.FillTable(tableOfUserResults, query);
+            setColumnsWidth(this.tableOfUserResults, 480, 18, 18, 18, 45);
             con.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Something went wrong!\n"+e);
+            JOptionPane.showMessageDialog(null, e, "Something went wrong!", JOptionPane.ERROR_MESSAGE);
         }
         
     }
@@ -91,6 +97,7 @@ public class History extends javax.swing.JFrame {
         tableOfUserResults = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Past Calculations");
 
         welcomeLabel.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -98,11 +105,11 @@ public class History extends javax.swing.JFrame {
 
         listLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         listLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        listLabel.setText("History of Calculations");
+        listLabel.setText("Past Calculations");
 
         title.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("Function Calculator");
+        title.setText("Equation Calculator");
         title.setAlignmentY(0.0F);
 
         backRegister1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -132,6 +139,8 @@ public class History extends javax.swing.JFrame {
             }
         });
         tableOfUserResults.setGridColor(new java.awt.Color(255, 153, 153));
+        tableOfUserResults.setRowHeight(25);
+        tableOfUserResults.setRowMargin(4);
         tableOfUserResults.setSelectionBackground(new java.awt.Color(255, 102, 102));
         tableOfUserResults.setSelectionForeground(new java.awt.Color(255, 255, 153));
         jScrollPane1.setViewportView(tableOfUserResults);
